@@ -22,7 +22,7 @@ const SearchItem = ({item}) => {
             </span>
         </div>
         <div className="siDetails">
-            {item.rating && <div className="siRating">
+            {item.rating !== 0 && <div className="siRating">
                 <span>Excellent</span>
                 <button>{item.rating}</button>
             </div>}
