@@ -25,6 +25,8 @@ const List = () => {
     reFetch();
   };
 
+  console.log(data)
+
   return (
     <div>
       <Navbar/>
