@@ -2,6 +2,15 @@ import "./searchItem.css"
 import { Link } from "react-router-dom";
 
 const SearchItem = ({item}) => {
+    // Функція для обрізання рядка до певної довжини
+  const truncateDescription = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + '...';
+    } else {
+      return text;
+    }
+  };
+
   return (
     <div className="searchItem">
        <img 
@@ -15,7 +24,7 @@ const SearchItem = ({item}) => {
             <span className="siSubtitle">
                 Studio Apartment with Air conditioning
             </span>
-            <span className="siFeatures">{item.description}</span>
+            <span className="siFeatures">{truncateDescription(item.description, 120)}</span>
             <span className="siCancelOp">Free cancellation </span>
             <span className="siCancelOpSubtitle">
                 You can cancel later, so lock in this great price today!

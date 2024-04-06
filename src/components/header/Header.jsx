@@ -26,6 +26,7 @@ const Header = ({type}) => {
         children:0,
         room:1
     });
+    
 
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);

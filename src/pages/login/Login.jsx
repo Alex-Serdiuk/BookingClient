@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [credentials, setCredentials] = useState({
-        username: undefined,
-        password: undefined,
+        username: "",
+        password: "",
       });
 
       const { loading, error, dispatch } = useContext(AuthContext);
@@ -29,6 +29,8 @@ const Login = () => {
           dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
         }
       };
+
+      const isFormValid = Object.values(credentials).every((value) => value !== "");
       
   return (
     <div className="login">
@@ -37,6 +39,7 @@ const Login = () => {
           type="text"
           placeholder="username"
           id="username"
+          value={credentials.username}
           onChange={handleChange}
           className="lInput"
         />
@@ -45,10 +48,11 @@ const Login = () => {
           placeholder="password"
           id="password"
           onChange={handleChange}
+          value={credentials.password}
           className="lInput"
         />
         <button 
-        disabled={loading} 
+        disabled={loading || !isFormValid} 
         onClick={handleClick} 
         className="lButton">
           Login

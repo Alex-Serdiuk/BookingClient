@@ -6,17 +6,16 @@ import axios from "axios";
 
 const Register = () => {
   const [credentials, setCredentials] = useState({
-    username: undefined,
-    email: undefined,
-    country: undefined,
-    city: undefined,
-    phoneNumber:undefined,
-    password: undefined,
+    username: "",
+    email: "",
+    country: "",
+    city: "",
+    phoneNumber: "",
+    password: ""
   });
 
    // Окреме поле для підтвердження пароля
    const [confirmPassword, setConfirmPassword] = useState("");
-
    const [passwordsMatch, setPasswordsMatch] = useState(true); // Стан для перевірки співпадіння паролів
 
   const { loading, error, dispatch } = useContext(AuthContext);
@@ -41,15 +40,23 @@ const Register = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    // dispatch({ type: "LOGIN_START" });
+
+    if (credentials.password !== confirmPassword) {
+      setPasswordsMatch(false);
+      return;
+    }
+   
     try {
       const res = await axios.post("/Account/Register", credentials);
-      // dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+      
       navigate("/login")
     } catch (err) {
+      console.error("Registration error:", err);
       // dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
   };
+
+  const isFormValid = Object.values(credentials).every((value) => value !== "");
 
   return (
     <div className="register">
@@ -58,6 +65,7 @@ const Register = () => {
           type="text"
           placeholder="username"
           id="username"
+          value={credentials.username}
           onChange={handleChange}
           className="rInput"
         />
@@ -65,6 +73,7 @@ const Register = () => {
           type="email"
           placeholder="email"
           id="email"
+          value={credentials.email}
           onChange={handleChange}
           className="rInput"
         />
@@ -72,6 +81,7 @@ const Register = () => {
           type="text"
           placeholder="country"
           id="country"
+          value={credentials.country}
           onChange={handleChange}
           className="rInput"
         />
@@ -79,6 +89,7 @@ const Register = () => {
           type="text"
           placeholder="city"
           id="city"
+          value={credentials.city}
           onChange={handleChange}
           className="rInput"
         />
@@ -86,6 +97,7 @@ const Register = () => {
           type="phoneNumber"
           placeholder="phoneNumber"
           id="phoneNumber"
+          value={credentials.phoneNumber}
           onChange={handleChange}
           className="rInput"
         />
@@ -93,6 +105,7 @@ const Register = () => {
           type="password"
           placeholder="password"
           id="password"
+          value={credentials.password}
           onChange={handleChange}
           className="rInput"
         />
@@ -100,11 +113,12 @@ const Register = () => {
           type="password"
           placeholder="confirm password"
           id="confirmPassword"
+          value={confirmPassword}
           onChange={handleChange}
           className="rInput"
         />
         <button 
-        disabled={loading || !passwordsMatch} // Вимкнути кнопку, якщо паролі не співпадають
+        disabled={loading || !passwordsMatch || !isFormValid} // Вимкнути кнопку, якщо паролі не співпадають
         onClick={handleClick} 
         className="rButton">
           Register
