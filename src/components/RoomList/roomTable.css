@@ -1,0 +1,86 @@
+.room-table-container {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  .room-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .room-table th,
+  .room-table td {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .room-table th {
+    background-color: #f8f8f8;
+    color: #333;
+  }
+  
+  .reserve-button {
+    background-color: #003580;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .reserve-button:hover {
+    background-color: #002752;
+  }
+  
+  span.booked {
+    color: #999;
+  }
+
+  .rTitle {
+    font-weight: 500;
+  }
+  
+  .rDesc {
+    font-weight: 300;
+  }
+  
+  /* Стилі для селектора кількості кімнат */
+  select {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Медіа запити для респонсив дизайну */
+  @media (max-width: 768px) {
+    .room-table {
+      font-size: 14px;
+    }
+    
+    .reserve-button {
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+  
+    select {
+      padding: 5px;
+    }
+  }
+  
+  /* Можна додати додаткові стилі для інших елементів, наприклад для відображення цін зі знижкою, лейблів пропозицій і т.д. */
+  .discount-price {
+    color: #ff6c00;
+    font-weight: bold;
+  }
+  
+  .original-price {
+    text-decoration: line-through;
+    color: #999;
+  }

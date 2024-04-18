@@ -47,7 +47,7 @@ const Reserve = ({setOpen, hotelId}) => {
             : selectedRooms.filter((item) => item !== value)
         );
       };
-
+      console.log(selectedRooms);
       const navigate = useNavigate();
 
       const handleClick = async () => {

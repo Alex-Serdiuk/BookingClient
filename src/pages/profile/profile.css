@@ -1,0 +1,96 @@
+.profileContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.profileWrapper{
+  width: 100%;
+  max-width: 1024px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  flex: 6; 
+}
+
+.profileContainer .profileWrapper .top,
+.profileContainer .profileWrapper .bottom {
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  padding: 10px;
+  margin: 20px;
+  display: flex;
+}
+
+.profileContainer .profileWrapper .top h1,
+.profileContainer .profileWrapper .bottom h1 {
+  color: rgb(167, 164, 164);
+  font-size: 20px;
+}
+
+.profileContainer .profileWrapper .top .left,
+.profileContainer .profileWrapper .bottom .left {
+  flex: 1;
+  text-align: center;
+}
+
+.profileContainer .profileWrapper .top .left img,
+.profileContainer .profileWrapper .bottom .left img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profileContainer .profileWrapper .top .right,
+.profileContainer .profileWrapper .bottom .right {
+  flex: 2;
+  padding: 0px 20px;
+}
+
+.profileContainer .profileWrapper .top .right form,
+.profileContainer .profileWrapper .bottom .right form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
+}
+
+.profileContainer .profileWrapper .top .right form .formInput,
+.profileContainer .profileWrapper .bottom .right form .formInput {
+  width: 40%;
+}
+
+.profileContainer .profileWrapper .top .right form .formInput label,
+.profileContainer .profileWrapper .bottom .right form .formInput label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profileContainer .profileWrapper .top .right form .formInput label .icon,
+.profileContainer .profileWrapper .bottom .right form .formInput label .icon {
+  cursor: pointer;
+}
+
+.profileContainer .profileWrapper .top .right form .formInput input,
+.profileContainer .profileWrapper .bottom .right form .formInput input {
+  width: 100%;
+  padding: 5px;
+  border: none;
+  border-bottom: 1px solid gray;
+}
+
+.profileContainer .profileWrapper .top .right form button,
+.profileContainer .profileWrapper .bottom .right form button {
+  width: 150px;
+  padding: 10px;
+  border: none;
+  background-color: teal;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
