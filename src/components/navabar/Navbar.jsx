@@ -39,8 +39,10 @@ const Navbar = () => {
                 </Link>
                 </div>
                 <div className="menuOptionItem">
-                <FontAwesomeIcon icon={faSuitcase} className="headerIcon"/>
-                <span className="optionText">Bookings</span>
+                <Link to="/bookings" style={{color:"inherit", textDecoration:"none"}}>
+                  <FontAwesomeIcon icon={faSuitcase} className="headerIcon"/>
+                  <span className="optionText">Bookings</span>
+                </Link>
                 </div>
                 <div className="menuOptionItem" onClick={handleClick}>
                 <FontAwesomeIcon icon={faArrowRightFromBracket} className="headerIcon"/>

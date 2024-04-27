@@ -13,27 +13,49 @@ const Reserve = ({setOpen, hotelId}) => {
     const { dates } = useContext(SearchContext);
 
     const getDatesInRange = (startDate, endDate) => {
-        const start = new Date(startDate);
+        // const start = new Date(startDate);
+        // const end = new Date(endDate);
+    
+        // const date = new Date(start.getTime());
+    
+        // const dates = [];
+    
+        // while (date <= end) {
+        //   dates.push(new Date(date).getTime());
+        //   date.setDate(date.getDate() + 1);
+        // }
+    
+        // return dates;
+
+        let currentDate = new Date(startDate);
+        currentDate.setHours(0, 0, 0, 0);
+
         const end = new Date(endDate);
-    
-        const date = new Date(start.getTime());
-    
+        end.setHours(0, 0, 0, 0);
+
         const dates = [];
-    
-        while (date <= end) {
-          dates.push(new Date(date).getTime());
-          date.setDate(date.getDate() + 1);
+
+        while (currentDate <= end) {
+          dates.push(currentDate.getTime());
+          currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
         }
-    
+
         return dates;
       };
 
       const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
 
       const isAvailable = (roomNumber) => {
-        const isFound = roomNumber.unavailableDates.some((unavailableDate) =>
-          alldates.includes(new Date(unavailableDate.date).getTime())
-        );
+        // const isFound = roomNumber.unavailableDates.some((unavailableDate) =>
+        //   alldates.includes(new Date(unavailableDate.date).getTime())
+        // );
+        const isFound = roomNumber.unavailableDates.some(unavailableDate => {
+          const unavailableDayStart = new Date(unavailableDate.date);
+          unavailableDayStart.setHours(0, 0, 0, 0);  // Нормалізація до початку дня
+          const unavailableDayTime = unavailableDayStart.getTime();
+      
+          return alldates.some(date => date === unavailableDayTime);
+        });
     
         return !isFound;
       };

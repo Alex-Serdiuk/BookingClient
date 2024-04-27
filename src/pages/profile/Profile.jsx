@@ -269,10 +269,10 @@ const replaceImage = async (file, oldUrl) => {
         </div>
         </div>
         
-        <MailList/>
-        <Footer/>
+       
       </div>)}
-      
+      <MailList/>
+      <Footer/>
     </div>
   )
 }

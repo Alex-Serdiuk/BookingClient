@@ -1,0 +1,89 @@
+.bookingContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1024px; /* This represents mx-auto. For wider screens, you can increase this value */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px; /* This is mt-5 where each mt unit is approx 4px */
+}
+
+.tableBooking {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tableBooking th,
+.tableBooking td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: left;
+    font-size: 14px;
+}
+
+.tableBooking th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.tableBooking tbody tr:nth-child(odd) {
+    background-color: #fdfdfd;
+}
+
+.tableBooking tbody tr:nth-child(even) {
+    background-color: #f1f1f1;
+}
+
+.tableBooking tbody tr:hover {
+    background-color: #e1f5fe;
+}
+
+.tableBooking img {
+    width: 100px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.tableBooking th,
+.tableBooking td {
+    text-align: center;
+}
+
+.tableBooking button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tableBooking button:hover {
+    background-color: #0056b3;
+}
+
+.tableBooking button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Additional responsiveness for smaller devices */
+@media (max-width: 768px) {
+    .tableBooking th,
+    .tableBooking td {
+        padding: 10px;
+        font-size: 12px;
+    }
+}
+
+/* Enhancing the readability and appearance of the header and data cells */
+.tableBooking th {
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.tableBooking td {
+    color: #555;
+}
