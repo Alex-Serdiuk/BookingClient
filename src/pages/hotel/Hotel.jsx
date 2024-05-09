@@ -5,7 +5,7 @@ import Footer from "../../components/footer/Footer";
 import MailList from "../../components/mailList/MailList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle, faCircleArrowLeft, faCircleArrowRight, faCircleXmark, faLocation, faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
@@ -16,24 +16,85 @@ import RoomTable from "../../components/RoomList/RoomTable";
 const Hotel = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
+  const { user } = useContext(AuthContext);
+  const { dates, options } = useContext(SearchContext);
+  const navigate = useNavigate();
+
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   const { data, loading, error } = useFetch(`/Hotel/${id}`);
-  const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
 
-  const { dates, options } = useContext(SearchContext);
+  const [days, setDays] = useState(0);
+  
+  // useEffect(() => {
+  //   if (!dates || dates.length === 0) {
+  //     const storedDates = localStorage.getItem('search');
+  //     if (storedDates) {
+  //       dates = JSON.parse(storedDates.dates);
+  //     }
+  //   }
+  // }, []);
 
-  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
-  function dayDifference(date1, date2) {
-    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
-    const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
-    return diffDays;
-  }
+  // useEffect(() => {
+  //   reFetch();
+  // }, [dates, options, reFetch]);
 
-  const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  // const dayDifference = (date1, date2) => {
+  //   const parsedDate1 = new Date(date1);
+  //   const parsedDate2 = new Date(date2);
+  //   if (isNaN(parsedDate1.getTime()) || isNaN(parsedDate2.getTime())) {
+  //     console.error("Invalid date(s) provided:", date1, date2);
+  //     return 0;
+  //   }
+  //   const timeDiff = Math.abs(parsedDate2.getTime() - parsedDate1.getTime());
+  //   return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  // };
+
+  // const days = dayDifference(dates[0].endDate, dates[0].startDate);
+
+  const [dayCount, setDayCount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  // useEffect(() => {
+  //   function dayDifference(date1, date2) {
+  //     const parsedDate1 = new Date(date1);
+  //     const parsedDate2 = new Date(date2);
+  //     if (isNaN(parsedDate1.getTime()) || isNaN(parsedDate2.getTime())) {
+  //       console.error("Invalid date(s) provided:", date1, date2);
+  //       return 0;
+  //     }
+  //     const timeDiff = Math.abs(parsedDate2.getTime() - parsedDate1.getTime());
+  //     return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  //   }
+
+  //   if (dates && dates[0] && dates[0].startDate && dates[0].endDate) {
+  //     const diffDays = dayDifference(dates[0].endDate, dates[0].startDate);
+  //     setDays(diffDays);
+  //   }
+  // }, [dates]);
+
+  useEffect(() => {
+    function calculateDays() {
+      if (dates && dates[0].startDate && dates[0].endDate) {
+        const start = new Date(dates[0].startDate);
+        const end = new Date(dates[0].endDate);
+        const timeDiff = Math.abs(end.getTime() - start.getTime());
+        const diffDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+        setDayCount(diffDays);
+      }
+    }
+
+    function calculateTotalPrice() {
+      if (dayCount && data && options) {
+        setTotalPrice(dayCount * data.cheapestPrice * options.room);
+      }
+    }
+
+    calculateDays();
+    calculateTotalPrice();
+  }, [dates, options, dayCount, data]);
 
   const handleOpen = (i)=>{
     setSlideNumber(i);
@@ -98,7 +159,7 @@ const Hotel = () => {
           <div className="hotelImages">
             {data.hotelImages?.map((photo, i)=>(
               <div className="hotelImgWraper">
-                <img onClick={()=>handleOpen(i)} src={photo.url} alt="" className="hotelImg" />
+                <img id={i} onClick={()=>handleOpen(i)} src={photo.url} alt="" className="hotelImg" />
               </div>
             ))}
           </div>
@@ -110,13 +171,13 @@ const Hotel = () => {
               </p>
             </div>
             <div className="hotelDetailsPrice">
-            <h1>Perfect for a {days}-night stay!</h1>
+            <h1>Perfect for a {dayCount}-night stay!</h1>
               <span>
                 Located in the real heart of {data.city}, this property has an
                 excellent location score of 9.8!
               </span>
               <h2>
-                <b>${days * data.cheapestPrice * options.room}</b> ({days} nights)
+                <b>${totalPrice}</b> ({dayCount} nights)
               </h2>
               <button onClick={handleClick}>Reserve or Book Now!</button>
             </div>

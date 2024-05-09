@@ -1,7 +1,7 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 
 const INITIAL_STATE = {
-    city: undefined,
+    destination: undefined,
     dates: [],
     options: {
       adult: undefined,
@@ -24,12 +24,37 @@ const INITIAL_STATE = {
   };
 
   export const SearchContextProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(SearchReducer, INITIAL_STATE);
+    const [state, dispatch] = useReducer(SearchReducer, INITIAL_STATE, () => {
+      const localData = localStorage.getItem('search');
+    if (localData) {
+      const parsedData = JSON.parse(localData);
+      // Перетворення дат з рядків у об'єкти Date
+      parsedData.dates = parsedData.dates.map(date => ({
+        ...date,
+        startDate: new Date(date.startDate),
+        endDate: new Date(date.endDate)
+      }));
+      return parsedData;
+    }
+    return INITIAL_STATE;
+    });
+
+    useEffect(() => {
+      localStorage.setItem('search', JSON.stringify({
+        ...state,
+        // Збереження дат як рядків
+        dates: state.dates.map(date => ({
+          ...date,
+          startDate: date.startDate.toISOString(),
+          endDate: date.endDate.toISOString()
+        }))
+      }));
+    }, [state]);
   
     return (
       <SearchContext.Provider
         value={{
-          city: state.city,
+          destination: state.destination,
           dates: state.dates,
           options: state.options,
           dispatch,

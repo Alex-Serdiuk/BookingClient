@@ -1,15 +1,15 @@
 import { useContext, useState } from "react";
 import "./register.css";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
   const [credentials, setCredentials] = useState({
     username: "",
     email: "",
-    country: "",
-    city: "",
+    // country: "",
+    // city: "",
     phoneNumber: "",
     password: ""
   });
@@ -59,71 +59,137 @@ const Register = () => {
   const isFormValid = Object.values(credentials).every((value) => value !== "");
 
   return (
-    <div className="register">
-      <div className="rContainer">
-        <input
-          type="text"
-          placeholder="username"
-          id="username"
-          value={credentials.username}
-          onChange={handleChange}
-          className="rInput"
-        />
-        <input
-          type="email"
-          placeholder="email"
-          id="email"
-          value={credentials.email}
-          onChange={handleChange}
-          className="rInput"
-        />
-        <input
-          type="text"
-          placeholder="country"
-          id="country"
-          value={credentials.country}
-          onChange={handleChange}
-          className="rInput"
-        />
-        <input
-          type="text"
-          placeholder="city"
-          id="city"
-          value={credentials.city}
-          onChange={handleChange}
-          className="rInput"
-        />
-        <input
-          type="phoneNumber"
-          placeholder="phoneNumber"
-          id="phoneNumber"
-          value={credentials.phoneNumber}
-          onChange={handleChange}
-          className="rInput"
-        />
-        <input
-          type="password"
-          placeholder="password"
-          id="password"
-          value={credentials.password}
-          onChange={handleChange}
-          className="rInput"
-        />
-         <input
-          type="password"
-          placeholder="confirm password"
-          id="confirmPassword"
-          value={confirmPassword}
-          onChange={handleChange}
-          className="rInput"
-        />
-        <button 
-        disabled={loading || !passwordsMatch || !isFormValid} // Вимкнути кнопку, якщо паролі не співпадають
-        onClick={handleClick} 
-        className="rButton">
-          Register
-        </button>
-        {error && <span>{error.message}</span>}
+    // <div className="register">
+    //   <div className="rContainer">
+    //     <input
+    //       type="text"
+    //       placeholder="username"
+    //       id="username"
+    //       value={credentials.username}
+    //       onChange={handleChange}
+    //       className="rInput"
+    //     />
+    //     <input
+    //       type="email"
+    //       placeholder="email"
+    //       id="email"
+    //       value={credentials.email}
+    //       onChange={handleChange}
+    //       className="rInput"
+    //     />
+    //     <input
+    //       type="text"
+    //       placeholder="country"
+    //       id="country"
+    //       value={credentials.country}
+    //       onChange={handleChange}
+    //       className="rInput"
+    //     />
+    //     <input
+    //       type="text"
+    //       placeholder="city"
+    //       id="city"
+    //       value={credentials.city}
+    //       onChange={handleChange}
+    //       className="rInput"
+    //     />
+    //     <input
+    //       type="phoneNumber"
+    //       placeholder="phoneNumber"
+    //       id="phoneNumber"
+    //       value={credentials.phoneNumber}
+    //       onChange={handleChange}
+    //       className="rInput"
+    //     />
+    //     <input
+    //       type="password"
+    //       placeholder="password"
+    //       id="password"
+    //       value={credentials.password}
+    //       onChange={handleChange}
+    //       className="rInput"
+    //     />
+    //      <input
+    //       type="password"
+    //       placeholder="confirm password"
+    //       id="confirmPassword"
+    //       value={confirmPassword}
+    //       onChange={handleChange}
+    //       className="rInput"
+    //     />
+    //     <button 
+    //     disabled={loading || !passwordsMatch || !isFormValid} // Вимкнути кнопку, якщо паролі не співпадають
+    //     onClick={handleClick} 
+    //     className="rButton">
+    //       Register
+    //     </button>
+    //     {error && <span>{error.message}</span>}
+    //   </div>
+    // </div>
+
+    <div className="registration-container">
+      <div className="registration-form">
+      <div className="registerHeader">
+        <h1>Register</h1>
+        <Link to="/login" className="link">
+        <span>
+          Login
+        </span>
+        </Link>
+       
+      </div>
+        <form>
+        <div className="regiser-form-group">
+          <input
+            type="text"
+            id="username"
+            value={credentials.username}
+            onChange={handleChange}
+            placeholder="username"
+          />
+        </div>
+          <div className="regiser-form-group">
+            <input
+              type="email"
+              placeholder="email"
+              id="email"
+              value={credentials.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="regiser-form-group">
+            <input
+              type="phoneNumber"
+              placeholder="phoneNumber"
+              id="phoneNumber"
+              value={credentials.phoneNumber}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="regiser-form-group">
+            <input
+              type="password"
+              placeholder="password"
+              id="password"
+              value={credentials.password}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="regiser-form-group">
+            <input
+             type="password"
+             placeholder="confirm password"
+             id="confirmPassword"
+             value={confirmPassword}
+             onChange={handleChange}
+            />
+          </div>
+          <button 
+            disabled={loading || !passwordsMatch || !isFormValid} // Вимкнути кнопку, якщо паролі не співпадають
+            onClick={handleClick}
+           className="register-button">Register</button>
+           {error && <span>{error.message}</span>}
+        </form>
       </div>
     </div>
   )

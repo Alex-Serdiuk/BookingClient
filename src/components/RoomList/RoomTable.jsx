@@ -5,30 +5,68 @@ import "./roomTable.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarDays, faPerson } from "@fortawesome/free-solid-svg-icons";
+import { format } from "date-fns";
+import { DateRange } from "react-date-range";
+import Room from "../Room/Room";
 
 const RoomTable = ({hotelId}) => 
 {
   const [selectedRoomNumbers, setSelectedRoomNumbers] = useState([]);
   const [availableRoomNumbers, setAvailableRoomNumbers] = useState([]);
   const {data, loading, error} = useFetch(`/Hotel/GetRoomsByHotelId/${hotelId}`);
-  const { dates } = useContext(SearchContext);
+  const { dates, options, destination, dispatch } = useContext(SearchContext);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  
+  const[openDate, setOpenDate] = useState(false);
+  const [selectedDates, setSelectedDates] = useState(dates || [{
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection'
+  }]);
+  const [selectedOptions, setSelectedOptions] = useState(options || {
+    adult: 1,
+    children: 0,
+    room: 1
+  });
+  
+
+  // Використання контексту для ініціалізації стану
+  // useEffect(() => {
+  //   if (dates && dates.length > 0) {
+  //     setSelectedDates(dates);
+  //   }
+  //   if (options) {
+  //     setSelectedOptions(options);
+  //   }
+    
+  // }, [dates, options]); 
+
+  useEffect(() => {
+    setSelectedDates(dates);
+    setSelectedOptions(options);
+  }, [dates, options]); // Забезпечте, що ви використовуєте оновлені дані для ваших локальних станів.
+
+  const[openOptions, setOpenOptions] = useState(false);
+  
+const handleOption = (name, operation) => {
+  setSelectedOptions(prev => ({
+    ...prev,
+    [name]: operation === "i" ? prev[name] + 1 : (prev[name] > 0 ? prev[name] - 1 : 0)
+  }));
+};
+
+const handleSearch = ()=>{
+  dispatch({ type: "NEW_SEARCH", payload: { destination: destination, dates: selectedDates, options: selectedOptions } });
+  // dispatch({ type: "NEW_SEARCH", payload: { destination, selectedDates, selectedOptions } });
+  // navigate("/hotels", {state:{destination, dates, options}})
+  // window.location.reload();
+}
+
 
   const getDatesInRange = (startDate, endDate) => {
-    // const start = new Date(startDate);
-    // const end = new Date(endDate);
-
-    // const date = new Date(start.getTime());
-
-    // const dates = [];
-
-    // while (date <= end) {
-    //   dates.push(new Date(date).getTime());
-    //   date.setDate(date.getDate() + 1);
-    // }
-
-    // return dates;
     let currentDate = new Date(startDate);
     currentDate.setHours(0, 0, 0, 0);
 
@@ -45,16 +83,19 @@ const RoomTable = ({hotelId}) =>
     return dates;
   };
 
-  const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
+  // const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
+  // Використовуйте selectedDates для обрахунків замість dates з контексту
+  const alldates = getDatesInRange(selectedDates[0].startDate, selectedDates[0].endDate);
 
-  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
-  function dayDifference(date1, date2) {
+  const dayDifference = (date1, date2) => {
     const timeDiff = Math.abs(date2.getTime() - date1.getTime());
-    const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
+    const diffDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
     return diffDays;
-  }
+  };
 
-  const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  // const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  // Використовуйте selectedDates для обрахунків замість dates з контексту
+  const days = dayDifference(selectedDates[0].endDate, selectedDates[0].startDate);
 
   const isAvailable = (roomNumber) => {
     // const isFound = roomNumber.unavailableDates.some((unavailableDate) =>
@@ -78,9 +119,9 @@ const RoomTable = ({hotelId}) =>
       )
       ) // Оновлюємо стан даними, якщо дані були успішно завантажені з сервера
     }
-  }, [data, loading, error]);
+  }, [data, loading, error, selectedDates]);
 
-console.log(availableRoomNumbers);
+// console.log(availableRoomNumbers);
 
   const handleSelect = (roomId, e) => {
 
@@ -104,7 +145,7 @@ console.log(availableRoomNumbers);
       setSelectedRoomNumbers(filteredRoomNumbers);
     }
   };
-  console.log(selectedRoomNumbers);
+  // console.log(selectedRoomNumbers);
 
   const handleClick = async () => {
       // try {
@@ -141,8 +182,79 @@ console.log(availableRoomNumbers);
     };
   }
 
+  const [openModalRoom, setOpenModalRoom] = useState(false);
+  const [selectedRoomId, setSelectedRoomId] = useState("");
+
+  const handleClickOpen = (id) => {
+    if (user) {
+      setOpenModalRoom(true);
+      setSelectedRoomId(id);
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
+    <>
     <div className="room-table-container">
+      <div className="roomSearch">
+                <div className="roomSearchItem">
+                    <FontAwesomeIcon icon={faCalendarDays} className="roomSearchIcon"/>
+                    <span onClick={()=>setOpenDate(!openDate)} className="roomSearchText">
+                      {`${format(selectedDates[0].startDate,"MM/dd/yyyy")} to ${format(selectedDates[0].endDate,"MM/dd/yyyy")}`}</span>
+                    {openDate && <DateRange
+                        editableDateInputs={true}
+                        onChange={item => setSelectedDates([item.selection])}
+                        moveRangeOnFirstSelection={false}
+                        ranges={selectedDates}
+                        className="date"
+                        minDate={new Date()}
+                    />}
+                </div>
+                <div className="roomSearchItem">
+                    <FontAwesomeIcon icon={faPerson} className="roomSearchIcon"/>
+                    <span onClick={()=>setOpenOptions(!openOptions)} className="roomSearchText">
+                      {`${selectedOptions.adult} adult · ${selectedOptions.children} children · ${selectedOptions.room} room`}</span>
+                    {openOptions && <div className="options">
+                        <div className="optionItem">
+                            <span className="optionText">Adult</span>
+                            <div className="optionCounter">
+                                <button 
+                                disabled={selectedOptions.adult <= 1}
+                                className="optionCounterButton" 
+                                onClick={()=>handleOption("adult", "d")}>-</button>
+                                <span className="optionCounterNumber">{selectedOptions.adult}</span>
+                                <button className="optionCounterButton" onClick={()=>handleOption("adult", "i")}>+</button>
+                            </div>
+                        </div>
+                        <div className="optionItem">
+                            <span className="optionText">Children</span>
+                            <div className="optionCounter">
+                                <button 
+                                disabled={options.children <= 0}
+                                className="optionCounterButton" 
+                                onClick={()=>handleOption("children", "d")}>-</button>
+                                <span className="optionCounterNumber">{selectedOptions.children}</span>
+                                <button className="optionCounterButton" onClick={()=>handleOption("children", "i")}>+</button>
+                            </div>
+                        </div>
+                        <div className="optionItem">
+                            <span className="optionText">Room</span>
+                            <div className="optionCounter">
+                                <button 
+                                disabled={options.room <= 1}
+                                className="optionCounterButton" 
+                                onClick={()=>handleOption("room", "d")}>-</button>
+                                <span className="optionCounterNumber">{options.room}</span>
+                                <button className="optionCounterButton" onClick={()=>handleOption("room", "i")}>+</button>
+                            </div>
+                        </div>
+                    </div>}
+                </div>
+                <div className="roomSearchItem">
+                   <button className="roomBtn" onClick={handleSearch}>Search</button>
+                </div>
+            </div>
       <table className="room-table">
         <thead>
           <tr>
@@ -157,7 +269,9 @@ console.log(availableRoomNumbers);
           {data.map((room, index) => (
             <tr key={room.id}>
               <td>
-                <div className="rTitle">{room.title}</div>
+                <div className="rTitle" 
+                onClick={() => handleClickOpen(room.id)}
+                >{room.title}</div>
                 <div className="rDesc">{room.description}</div>
               </td>
               <td>Max People: {room.maxPeople}</td>
@@ -179,6 +293,7 @@ console.log(availableRoomNumbers);
                 </select>
               </td>
             </tr>
+            
           ))}
         </tbody>
         <tfoot>
@@ -191,7 +306,10 @@ console.log(availableRoomNumbers);
           </tr>
         </tfoot>
       </table>
+      
     </div>
+    {openModalRoom && <Room setOpen={setOpenModalRoom} roomId={selectedRoomId}/>}
+    </>
   )
 }
 
