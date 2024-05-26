@@ -23,12 +23,13 @@ const Navbar = () => {
   return (
     <div className="navbar">
         <div className="navContainer">
-          <Link to="/" style={{color:"inherit", textDecoration:"none"}}>
-            <span className="logo">ComfortHub</span>
+          <Link to="/" className="logoLink" style={{color:"inherit", textDecoration:"none"}}>
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/31c3ed2a7c25e45782dd51732c9a71686760e250f80716565f7e05429ae20224?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&" alt="ComfortHub logo" className="logo-img" />
+            <span className="logo">omfortHub</span>
           </Link>
             {user ? (
               <>
-                <span onClick={()=>setOpenMenu(!openMenu)}>
+                <span className="userName" onClick={()=>setOpenMenu(!openMenu)}>
                   {user.userName}
                 </span>
                 {openMenu && (<div className="menuOptions">

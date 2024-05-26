@@ -1,9 +1,10 @@
 .navbar{
-    height: 50px;
-    background-color: #003b95;
+    /* height: 50px; */
+    background-color: #2e2e2e;
     display: flex;
     justify-content: center;
     position: relative; /*+*/
+    padding-top: 10px;
 }
 
 .navContainer{
@@ -15,9 +16,34 @@
     align-items: center;
     justify-content: space-between;
 }
+.logoLink{
+    margin-top: 20px;
+}
 
 .logo{
-    font-weight: 500;
+    font-family: Inter, sans-serif;
+    background: linear-gradient(90deg, #ffa800 0%, #ff4a00 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    align-self: end;
+    margin-top: 40px;
+    flex-grow: 1;
+    flex-basis: auto;
+    font-size: 48px;
+    font-weight: 700;
+    margin-left: 3px;
+}
+
+.logo-img {
+    aspect-ratio: 0.83;
+    object-fit: auto;
+    object-position: center;
+    width: 73px;
+    align-self: start;
+}
+.navItems{
+    margin-top: -60px;
 }
 
 .navButton{
@@ -25,13 +51,21 @@
    border: none;
    padding: 5px 10px;
    cursor: pointer;
-   color:#003b95;
+   color:#fff;
+   background-color: #ff4a00;
+   font: 400 14px Inter, sans-serif;
+   padding: 11px 24px;
+}
+
+.userName{
+    vertical-align: top;
+    margin-top: -80px;
 }
 
 .menuOptions{
     z-index: 2;
     position: absolute;
-    top: 50px;
+    top: 40px;
     /* right:9%; */
     background-color: white;
     color: gray;

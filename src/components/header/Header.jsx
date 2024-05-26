@@ -72,9 +72,9 @@ const Header = ({type}) => {
             </div>
            { type !== "list" &&
            <>
-           <h1 className="headerTitle">Find your next stay</h1>
-            <p className="headerDesc">Search low prices on hotels, homes and much more...</p>
-            {!user && <button className="headerBtn">Sign in / Register</button>}
+           {/* <h1 className="headerTitle">Find your next stay</h1>
+            <p className="headerDesc">Search low prices on hotels, homes and much more...</p> */}
+            {/* {!user && <button className="headerBtn">Sign in / Register</button>} */}
             <div className="headerSearch">
                 <div className="headerSearchItem">
                     <FontAwesomeIcon icon={faBed} className="headerIcon"/>

@@ -1,8 +1,39 @@
+import { useContext } from "react";
+import { SearchContext } from "../../context/SearchContext";
 import useFetch from "../../hooks/useFetch";
 import "./featuredProperties.css"
+import { useNavigate } from "react-router-dom";
 
 const FeaturedProperties = () => {
   const { data, loading, error } = useFetch("/Hotel?Featured=true&Limit=4");
+  const { dispatch } = useContext(SearchContext);
+  const navigate = useNavigate();
+
+  const getRatingWord = (rating) => {
+    if (rating >= 9) return "Superb";
+    if (rating >= 8) return "Very Good";
+    if (rating >= 7) return "Good";
+    if (rating >= 6) return "Pleasant";
+    return "Average";
+  };
+
+  const defaultDates = [{
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection'
+  }];
+  
+  const defaultOptions = {
+    adult: 1,
+    children: 0,
+    room: 1
+  };
+
+  const handleFpItemClick = (item) => {
+    dispatch({ type: "NEW_SEARCH", payload: { destination: item.city, dates: defaultDates, options: defaultOptions } });
+    navigate(`/hotels/${item.id}`);
+  };
+
   return (
     <div className="fp">
        {loading ? (
@@ -10,7 +41,7 @@ const FeaturedProperties = () => {
       ) : (
         <>
           {data.map((item) => (
-            <div className="fpItem" key={item.id}>
+            <div className="fpItem" key={item.id} onClick={() => handleFpItemClick(item)}>
               <img
                 src={item.hotelImages[0]?.url}
                 alt=""
@@ -21,7 +52,7 @@ const FeaturedProperties = () => {
               <span className="fpPrice">Starting from ${item.cheapestPrice}</span>
               {item.rating && <div className="fpRating">
                 <button>{item.rating}</button>
-                <span>Excellent</span>
+                <span>{getRatingWord(item.rating)}</span>
               </div>}
             </div>
           ))}

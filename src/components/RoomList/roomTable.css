@@ -127,14 +127,14 @@
 
 .roomSearchItem .date{
     /* position: absolute; */
-    top: 910px;
+    top: 975px;
     z-index: 2;
 }
 
 .roomSearchItem .options{
     z-index: 2;
     position: absolute;
-    top: 910px;
+    top: 975px;
     background-color: white;
     color: gray;
     border-radius: 5px;

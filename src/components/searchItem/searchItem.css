@@ -1,5 +1,6 @@
 .searchItem{
     border: 1px solid lightgrey;
+    box-shadow: 4px 4px 6px 0px rgba(0, 0, 0, 0.25);
     padding: 10px;
     border-radius: 5px;
     display: flex;
@@ -22,7 +23,7 @@
 
 .siTitle{
     font-size: 20px;
-    color: #0071c2;
+    /* color: #0071c2; */
 }
 
 .siDistance{
@@ -68,13 +69,14 @@
 .siRating{
 display: flex;
 justify-content: space-between;
+align-self: flex-end;
 }
 
 .siRating>span{
     font-weight: 500;
 }
 .siRating>button{
-    background-color: #003580;
+    background-color: #ff4a00;
     color: white;
     padding: 5px;
     font-weight: bold;
@@ -98,7 +100,7 @@ justify-content: space-between;
 }
 
 .siCheckButton{
-    background-color: #0071c2;
+    background-color: #ff4a00;
     color: white;
     font-weight: bold;
     padding: 10px 5px;

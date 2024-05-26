@@ -1,14 +1,26 @@
 .header{
-    background-color:#003b95;
+    background-color: #2e2e2e;
     color: white;
     display: flex;
     justify-content: center;
     position: relative;
+    padding: 10px 0;
+    
 }
+
+body, html {
+    overflow-x: hidden; /* Прибирає горизонтальний скролінг */
+}
+
+
 .headerContainer{
     width: 100%;
     max-width: 1024px;
-    margin: 20px 0px 100px 0px;
+    margin: 20px 0px 0px 0px;
+    display: flex;
+    /* justify-content: space-between; Додає проміжок між блоками */
+    align-items: center;
+    flex-direction: column;
 }
 
 .headerContainer.listMode{
@@ -17,13 +29,16 @@
 
 .headerList{
     display: flex;
+    /* justify-content: center; */
     gap: 40px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
+    align-self: flex-end; /* Вирівнювання по правому краю */
 }
 .headerListItem{
     display: flex;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 }
 
 .headerListItem.active{
@@ -37,7 +52,7 @@
 }
 
 .headerBtn{
-    background-color: #046bd3;
+    background-color: #ff4a00;
     color: white;
     font-weight: 500;
     border: none;
@@ -47,18 +62,17 @@
 }
 
 .headerSearch{
-    height: 30px;
-    background-color: white;
-    border: 3px solid #f3b303;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 10px 0px;
-    border-radius: 5px;
-    position: absolute;
-    bottom: -25px;
+    gap: 10px;
+    padding: 10px;
     width: 100%;
     max-width: 1024px;
+    backdrop-filter: blur(25px);
+    background-color: rgba(74, 74, 74, 0.4);
+    border-radius: 5px;
+    position: relative;
 }
 
 .headerIcon{
@@ -66,8 +80,11 @@
 }
 
 .headerSearchItem{
+    background-color: #fff;
+    color: #3d3d3d;
     display: flex;
     align-items: center;
+    padding: 10px 10px;
     gap: 10px;
 }
 
@@ -117,8 +134,8 @@
 .optionCounterButton{
     width: 30px;
     height: 30px;
-    border: 1px solid #0473c2;
-    color: #0473c2;
+    border: 1px solid #ff4a00;
+    color: #ff4a00;
     cursor: pointer;
     background-color: white;
 }

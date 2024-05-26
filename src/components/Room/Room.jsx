@@ -1,296 +1,389 @@
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react'
+import React from 'react';
+import Modal from 'react-modal';
 import "./room.css";
 import useFetch from '../../hooks/useFetch';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-const Room = ({setOpen, roomId}) => {
-    const {data, loading, error} = useFetch(`/Room/${roomId}`);
-  // builder******************************************************
-    function StarIcon({ filled }) {
-        return (
-          <img
-            loading="lazy"
-            src={filled ? "https://cdn.builder.io/api/v1/image/assets/TEMP/b92801e00fd32e49a033126703dc2afc34a3ad335939a3ca7db36637bcd961df?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&" : "https://cdn.builder.io/api/v1/image/assets/TEMP/5a2eb8b90ddb2f4ed65562e1d15cfc78273e6ea5a9dd23de3a1463ee2db61c66?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&"}
-            className="star-icon"
-          />
-        );
-      }
-      
-      function RoomFeature({ icon, text }) {
-        return (
-          <div className="room-feature">
-            <img loading="lazy" src={icon} className="feature-icon" />
+const Room = ({ isOpen, setOpen, roomId }) => {
+    const { data, loading, error } = useFetch(`/Room/${roomId}`);
+
+    const RoomFeature = ({ icon, text }) => (
+        <div className="room-feature">
+            <img src={icon} alt="" className="feature-icon" />
             <div className="feature-text">{text}</div>
-          </div>
-        );
-      }
+        </div>
+    );
 
-      function MyComponent() {
-        const stars = [true, true, true, true, false];
-        const roomFeatures = [
-          { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/ca5189d7a623700cb6117d6cc0e3f3e0c5de981ea6ab5872db0915f0098e07cc?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Номер" },
-          { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/ca5189d7a623700cb6117d6cc0e3f3e0c5de981ea6ab5872db0915f0098e07cc?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Кондиціонер" },
-          { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/d4a264c8f0f25ea621d45a92a9043f6b65cfd9bb88b1cfdead213b622aaa114b?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Вид на внутрішній двір" },
-          { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/d4a264c8f0f25ea621d45a92a9043f6b65cfd9bb88b1cfdead213b622aaa114b?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Власна ванна кімната" },
-          { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/ca5189d7a623700cb6117d6cc0e3f3e0c5de981ea6ab5872db0915f0098e07cc?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Телевізор з плоским екраном" },
-          { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/d4a264c8f0f25ea621d45a92a9043f6b65cfd9bb88b1cfdead213b622aaa114b?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Міні-бар" },
-          { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/ca5189d7a623700cb6117d6cc0e3f3e0c5de981ea6ab5872db0915f0098e07cc?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Звукоізоляція" },
-          { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/d4a264c8f0f25ea621d45a92a9043f6b65cfd9bb88b1cfdead213b622aaa114b?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Безкоштовний Wi-Fi" },
+    const RoomFeatures = () => {
+        const features = [
+            { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/a23243cdb86cfef2210cc820f1d023dac40d1b0646839b15390b6e0b5683ee26?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Room" },
+            { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/a23243cdb86cfef2210cc820f1d023dac40d1b0646839b15390b6e0b5683ee26?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Courtyard View" },
+            { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/a23243cdb86cfef2210cc820f1d023dac40d1b0646839b15390b6e0b5683ee26?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Air Conditioning" },
+            { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/a23243cdb86cfef2210cc820f1d023dac40d1b0646839b15390b6e0b5683ee26?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Private Bathroom" },
+            { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/a23243cdb86cfef2210cc820f1d023dac40d1b0646839b15390b6e0b5683ee26?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Flat-screen TV" },
+            { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/a23243cdb86cfef2210cc820f1d023dac40d1b0646839b15390b6e0b5683ee26?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Minibar" },
+            { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/a23243cdb86cfef2210cc820f1d023dac40d1b0646839b15390b6e0b5683ee26?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Soundproofing" },
+            { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/a23243cdb86cfef2210cc820f1d023dac40d1b0646839b15390b6e0b5683ee26?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&", text: "Free Wi-Fi" },
         ];
-      
-        const roomAmenities = [
-          "Сейф",
-          "На верхні поверхи можна піднятися тільки сходами",
-          "Телевізор з плоским екраном",
-          "Послуга дзвінок-\"будильник\"",
-          "Рушники",
-          "Розетка поблизу з ліжком",
-          "Телевізор",
-          "Холодильник",
-          "Білизна",
-          "Міні-бар",
-          "Килимове покриття",
-          "Опалення",
-          "Гардеробна",
-          "Кабельні канали",
-          "Звукоізоляція",
-          "Москітна сітка",
-          "Кондиціонер",
-          "Вішалка для одягу",
-          "Робочий стіл",
-        ];
-      
+
         return (
-          <>
-            <article className="room-details">
-              {/* <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/e8cd4fed-b66d-4603-8fa8-8369025ea802?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&" className="room-image" /> */}
-              <h1 className="room-title">
-                Двомісний номер економ-класу з мансардою
-              </h1>
-              <div className="star-rating">
-                {stars.map((filled, index) => (
-                  <StarIcon key={index} filled={filled} />
+            <div className="room-features">
+                {features.map((feature, index) => (
+                    <RoomFeature key={index} icon={feature.icon} text={feature.text} />
                 ))}
-              </div>
-              <section className="room-features">
-                {roomFeatures.map(({ icon, text }, index) => (
-                  <RoomFeature key={index} icon={icon} text={text} />
-                ))}
-              </section>
-              <h2 className="amenities-title">Зручності у номері:</h2>
-              <section className="room-amenities">
-                <ul className="amenities-list">
-                  {roomAmenities.map((amenity, index) => (
-                    <li key={index}>{amenity}</li>
-                  ))}
-                </ul>
-              </section>
-              <h2 className="bathroom-title">У вашій власній ванній кімнаті:</h2>
-            </article>
-            <style jsx>{`
-              .room-details {
-                display: flex;
-                flex-direction: column;
-                margin-bottom: -1px;
-              }
-      
-              @media (max-width: 991px) {
-                .room-details {
-                  max-width: 100%;
-                  margin-top: 40px;
-                }
-              }
-      
-              .room-image {
-                aspect-ratio: 1;
-                object-fit: cover;
-                width: 100%;
-                border: 1px solid rgba(0, 0, 0, 1);
-                align-self: flex-end;
-              }
-      
-              .room-title {
-                color: #111;
-                margin-top: 5px;
-                font: 700 32px Inter, sans-serif;
-              }
-      
-              @media (max-width: 991px) {
-                .room-title {
-                  max-width: 100%;
-                }
-              }
-      
-              .star-rating {
-                align-self: flex-start;
-                display: flex;
-                margin-top: 17px;
-                gap: 13px;
-              }
-      
-              .star-icon {
-                width: 27px;
-                height: 27px;
-                object-fit: contain;
-              }
-      
-              .room-features {
-                display: flex;
-                flex-wrap: wrap;
-                margin-top: 28px;
-                margin
-                font-size: 20px;
-                color: #000;
-                font-weight: 400;
-                padding: 0 80px 0 11px;
-                gap: 14px 20px;
-              }
-      
-              @media (max-width: 991px) {
-                .room-features {
-                  max-width: 100%;
-                  padding-right: 20px;
-                }
-              }
-      
-              @media (max-width: 640px) {
-                .room-features {
-                  margin-right: auto;
-                }
-              }
-      
-              .room-feature {
-                display: flex;
-                gap: 20px;
-                white-space: nowrap;
-              }
-      
-              @media (max-width: 991px) {
-                .room-feature {
-                  white-space: initial;
-                }
-              }
-      
-              .feature-icon {
-                width: 16px;
-                height: 16px;
-                object-fit: contain;
-                fill: #ff4a00;
-                align-self: flex-start;
-                margin-top: 4px;
-              }
-      
-              .feature-text {
-                font-family: Inter, sans-serif;
-                flex-grow: 1;
-                flex-basis: auto;
-              }
-      
-              .amenities-title {
-                color: #111;
-                margin-top: 20px;
-                font: 400 32px Inter, sans-serif;
-              }
-      
-              @media (max-width: 991px) {
-                .amenities-title {
-                  max-width: 100%;
-                  margin-top: 40px;
-                }
-              }
-      
-              .room-amenities {
-                margin-top: 24px;
-              }
-      
-              @media (max-width: 991px) {
-                .room-amenities {
-                  max-width: 100%;
-                }
-              }
-      
-              .amenities-list {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 20px;
-                color: #000;
-                font: 400 20px Inter, sans-serif;
-              }
-      
-              @media (max-width: 991px) {
-                .amenities-list {
-                  flex-direction: column;
-                  align-items: stretch;
-                  gap: 0px;
-                }
-              }
-      
-              .amenities-list li {
-                width: calc(50% - 10px);
-                margin-top: 34px;
-              }
-      
-              @media (max-width: 991px) {
-                .amenities-list li {
-                  width: 100%;
-                }
-              }
-      
-              .bathroom-title {
-                color: #111;
-                margin-top: 57px;
-                font: 400 32px Inter, sans-serif;
-              }
-      
-              @media (max-width: 991px) {
-                .bathroom-title {
-                  max-width: 100%;
-                  margin-top: 40px;
-                }
-              }
-
-              
-            `}</style>
-          </>
+            </div>
         );
-      }
+    };
 
-    return (
-    <>
-    <div className='roomModal'>
-        <div className="modal-content">
-            <FontAwesomeIcon 
-                icon={faCircleXmark} 
-                className="roomClose" 
-                onClick={() => setOpen(false)}
-            />
-            <div className="modal-container">
-                <div className="left-column">
-                <Carousel dynamicHeight={true} 
-                showArrows={true}
-                // thumbWidth={132}
-                // autoPlay interval={2000} infiniteLoop
-                >
-                      {data.roomImages?.map((photo, i) =>(<div key={i}>
-                        <img src={photo.url} alt="" />
-                      </div>
-                      ))}
-                    </Carousel>
-                </div>
-                <div className="right-column">
-                    <MyComponent/>
+    const RoomAmenities = () => {
+        const amenities = [
+            "Safe",
+            "Upper floors accessible by stairs only",
+            "Flat-screen TV",
+            "Wake-up service",
+            "Towels",
+            "Socket near the bed",
+            "TV",
+            "Refrigerator",
+            "Linen",
+            "Minibar",
+            "Carpeted",
+            "Heating",
+            "Wardrobe",
+            "Cable channels",
+            "Soundproofing",
+            "Mosquito net",
+            "Air conditioning",
+            "Clothes rack",
+            "Desk",
+        ];
+
+        return (
+            <div className="room-amenities">
+                <div className="amenities-list">
+                    <ul className="amenities-column">
+                        {amenities.slice(0, Math.ceil(amenities.length / 2)).map((amenity, index) => (
+                            <li key={index} className="amenity-item">
+                                {amenity}
+                            </li>
+                        ))}
+                    </ul>
+                    <ul className="amenities-column">
+                        {amenities.slice(Math.ceil(amenities.length / 2)).map((amenity, index) => (
+                            <li key={index} className="amenity-item">
+                                {amenity}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
-        
-        </div>
-    </div>
-    
-</>
-    
-  )
+        );
+    };
+
+    function RoomDetails() {
+        return (
+            <>
+                <article className="room-details">
+                    <h1 className="room-title">{data.title}</h1>
+                    <div className="image-gallery">
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b92801e00fd32e49a033126703dc2afc34a3ad335939a3ca7db36637bcd961df?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&" alt="" className="gallery-image" />
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b92801e00fd32e49a033126703dc2afc34a3ad335939a3ca7db36637bcd961df?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&" alt="" className="gallery-image" />
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b92801e00fd32e49a033126703dc2afc34a3ad335939a3ca7db36637bcd961df?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&" alt="" className="gallery-image" />
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5a2eb8b90ddb2f4ed65562e1d15cfc78273e6ea5a9dd23de3a1463ee2db61c66?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&" alt="" className="gallery-image inactive" />
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5a2eb8b90ddb2f4ed65562e1d15cfc78273e6ea5a9dd23de3a1463ee2db61c66?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&" alt="" className="gallery-image inactive" />
+                    </div>
+                    <RoomFeatures />
+                    <h2 className="amenities-title">Room Amenities:</h2>
+                    <RoomAmenities />
+                </article>
+
+                <style jsx>{`
+                    .room-details {
+                        display: flex;
+                        margin-top: 6px;
+                        flex-grow: 1;
+                        flex-direction: column;
+                    }
+
+                    @media (max-width: 991px) {
+                        .room-details {
+                            max-width: 100%;
+                            margin-top: 40px;
+                        }
+                    }
+
+                    .room-title {
+                        color: #111;
+                        font: 700 32px Inter, sans-serif;
+                    }
+
+                    @media (max-width: 991px) {
+                        .room-title {
+                            max-width: 100%;
+                        }
+                    }
+
+                    .image-gallery {
+                        align-self: start;
+                        display: flex;
+                        margin-top: 17px;
+                        gap: 13px;
+                    }
+
+                    .gallery-image {
+                        aspect-ratio: 1.04;
+                        object-fit: cover;
+                        object-position: center;
+                        width: 27px;
+                    }
+
+                    .gallery-image.inactive {
+                        filter: grayscale(1);
+                    }
+
+                    .room-features {
+                        display: flex;
+                        margin-top: 28px;
+                        font-size: 20px;
+                        color: #000;
+                        font-weight: 400;
+                        gap: 34px;
+                        flex-wrap: wrap;
+                    }
+
+                    @media (max-width: 991px) {
+                        .room-features {
+                            max-width: 100%;
+                        }
+                    }
+
+                    .room-feature {
+                        display: flex;
+                        gap: 19px;
+                        align-items: center;
+                    }
+
+                    .feature-icon {
+                        width: 16px;
+                        height: auto;
+                    }
+
+                    .feature-text {
+                        font-family: Inter, sans-serif;
+                    }
+
+                    .amenities-title {
+                        color: #111;
+                        margin-top: 67px;
+                        font: 400 32px Inter, sans-serif;
+                    }
+
+                    @media (max-width: 991px) {
+                        .amenities-title {
+                            max-width: 100%;
+                            margin-top: 40px;
+                        }
+                    }
+
+                    .room-amenities {
+                        margin-top: 24px;
+                    }
+
+                    @media (max-width: 991px) {
+                        .room-amenities {
+                            max-width: 100%;
+                        }
+                    }
+
+                    .amenities-list {
+                        display: flex;
+                        gap: 20px;
+                    }
+
+                    @media (max-width: 991px) {
+                        .amenities-list {
+                            flex-direction: column;
+                            align-items: stretch;
+                            gap: 0px;
+                        }
+                    }
+
+                    .amenities-column {
+                        display: flex;
+                        flex-direction: column;
+                        line-height: normal;
+                        width: 50%;
+                    }
+
+                    @media (max-width: 991px) {
+                        .amenities-column {
+                            width: 100%;
+                        }
+                    }
+
+                    .amenity-item {
+                        color: #000;
+                        font: 400 20px Inter, sans-serif;
+                        margin-top: 10px;
+                    }
+
+                    @media (max-width: 991px) {
+                        .amenity-item {
+                            margin-top: 34px;
+                        }
+                    }
+                `}</style>
+            </>
+        );
+    }
+
+    function RoomDetails2({ roomData }) {
+        return (
+            <article className="room-details">
+                <h2 className="room-view-heading">View:</h2>
+                <p className="room-view-description">{roomData.view}</p>
+                <h2 className="room-size-heading">Room size {roomData.size} m²</h2>
+                <p className="room-bed-description">{roomData.bedDescription}</p>
+                <p className="room-bed-rating">{roomData.bedRating}</p>
+                <p className="room-description">{roomData.description}</p>
+                <h2 className="room-smoking-heading">Smoking:</h2>
+                <p className="room-smoking-description">{roomData.smoking}</p>
+            </article>
+        );
+    }
+
+    function App() {
+        const roomData = {
+            view: "Courtyard View",
+            size: 10,
+            bedDescription: data.description,
+            bedRating: "Comfortable beds (rating 8.9) – based on 791 reviews",
+            description: "Double room with private bathroom with shower, hairdryer, slippers, and free toiletries. This soundproof double room features air conditioning, a flat-screen TV with cable channels, a minibar, and a safe. The windows offer a view of the courtyard. This accommodation option has 1 bed.",
+            smoking: "Non-smoking",
+        };
+
+        return (
+            <>
+                <RoomDetails2 roomData={roomData} />
+                <style jsx>{`
+                    .room-details {
+                        display: flex;
+                        flex-direction: column;
+                        position: relative;
+                    }
+                    .room-view-heading {
+                        color: #111;
+                        margin: 38px 0 0 0px;
+                        font: 400 32px Inter, sans-serif;
+                    }
+                    @media (max-width: 991px) {
+                        .room-view-heading {
+                            margin-top: 40px;
+                        }
+                    }
+                    .room-view-description {
+                        color: #000;
+                        margin: 33px 0 0 0px;
+                        font: 400 20px Inter, sans-serif;
+                    }
+                    .room-size-heading {
+                        color: #111;
+                        margin: 58px 20px 0 0;
+                        font: 400 32px Inter, sans-serif;
+                    }
+                    @media (max-width: 991px) {
+                        .room-size-heading {
+                            margin: 40px 10px 0 0;
+                        }
+                    }
+                    .room-bed-description {
+                        color: #000;
+                        margin: 26px 0 0 0px;
+                        font: 400 20px Inter, sans-serif;
+                    }
+                    .room-bed-rating {
+                        color: #000;
+                        align-self: end;
+                        margin: 27px 88px 0 0;
+                        font: 400 20px Inter, sans-serif;
+                    }
+                    @media (max-width: 991px) {
+                        .room-bed-rating {
+                            max-width: 100%;
+                            margin-right: 10px;
+                        }
+                    }
+                    .room-description {
+                        color: #000;
+                        align-self: end;
+                        margin: 27px 20px 0 0;
+                        font: 400 20px Inter, sans-serif;
+                    }
+                    @media (max-width: 991px) {
+                        .room-description {
+                            max-width: 100%;
+                            margin-right: 10px;
+                        }
+                    }
+                    .room-smoking-heading {
+                        color: #111;
+                        margin: 55px 0 0 0px;
+                        font: 400 32px Inter, sans-serif;
+                    }
+                    @media (max-width: 991px) {
+                        .room-smoking-heading {
+                            margin-top: 40px;
+                        }
+                    }
+                    .room-smoking-description {
+                        color: #000;
+                        margin: 11px 0 0 0px;
+                        font: 400 20px Inter, sans-serif;
+                    }
+                `}</style>
+            </>
+        );
+    }
+
+    return (
+        <>
+            <Modal   
+                isOpen={isOpen}
+                onRequestClose={() => setOpen(false)}
+                contentLabel="Room Details"
+                className="Modal"
+                overlayClassName="Overlay"
+            >
+                <div className="modal-content">
+                    <FontAwesomeIcon 
+                        icon={faCircleXmark} 
+                        className="roomClose" 
+                        onClick={() => setOpen(false)}
+                    />
+                    <div className="modal-container">
+                        <div className="left-column">
+                            <Carousel dynamicHeight={true} 
+                                showArrows={true}
+                            >
+                                {data.roomImages?.map((photo, i) => (
+                                    <div key={i}>
+                                        <img src={photo.url} alt="" />
+                                    </div>
+                                ))}
+                            </Carousel>
+                        </div>
+                        <div className="right-column">
+                            {RoomDetails()}
+                            {App()}
+                        </div>
+                    </div>
+                </div>
+            </Modal>
+        </>
+    );
 }
 
-export default Room
+export default Room;

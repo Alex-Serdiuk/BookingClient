@@ -308,7 +308,7 @@ const handleSearch = ()=>{
       </table>
       
     </div>
-    {openModalRoom && <Room setOpen={setOpenModalRoom} roomId={selectedRoomId}/>}
+    {openModalRoom && <Room isOpen={openModalRoom} setOpen={setOpenModalRoom} roomId={selectedRoomId}/>}
     </>
   )
 }
