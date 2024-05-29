@@ -31,7 +31,7 @@ const Featured = () => {
         <>
         <div className="featuredItem" onClick={() => handleFeaturedClick("berlin")}>
             <img 
-            src="https://cf.bstatic.com/xdata/images/city/max500/957801.webp?k=a969e39bcd40cdcc21786ba92826063e3cb09bf307bcfeac2aa392b838e9b7a5&o=" 
+            src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/28/54/58/97/blick-richtung-osten.jpg?w=500&h=500&s=1" 
             alt=""
             className="featuredImg" 
             />
@@ -42,18 +42,18 @@ const Featured = () => {
         </div>
         <div className="featuredItem" onClick={() => handleFeaturedClick("madrid")}>
             <img
-            src="https://cf.bstatic.com/xdata/images/city/max500/690334.webp?k=b99df435f06a15a1568ddd5f55d239507c0156985577681ab91274f917af6dbb&o="
+            src="https://strawberrytours.com/_next/image?url=https%3A%2F%2Fimagedelivery.net%2FxtVVrgn04XP6bhrBt0jaJQ%2Fcd831f21-e0b3-4ff2-a296-7cdd096c6c00%2F500x500&w=1080&q=75"
             alt=""
             className="featuredImg"
             />
             <div className="featuredTitles">
-            <h1>Maidrid</h1>
+            <h1>Madrid</h1>
             <h2>{data["madrid"]} properties</h2>
             </div>
       </div>
       <div className="featuredItem" onClick={() => handleFeaturedClick("london")}>
         <img
-          src="https://cf.bstatic.com/xdata/images/city/max500/689422.webp?k=2595c93e7e067b9ba95f90713f80ba6e5fa88a66e6e55600bd27a5128808fdf2&o="
+          src="https://www.zurich.co.uk/-/media/about-us/images/components/hero-banner/london.jpg?h=500&la=en&w=500"
           alt=""
           className="featuredImg"
         />

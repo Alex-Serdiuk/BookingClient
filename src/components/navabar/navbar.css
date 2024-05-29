@@ -1,24 +1,21 @@
 .navbar{
-    /* height: 50px; */
     background-color: #2e2e2e;
     display: flex;
     justify-content: center;
-    position: relative; /*+*/
+    position: relative;
     padding-top: 10px;
 }
 
 .navContainer{
     width: 100%;
     max-width: 1024px;
-    /* background-color: red; */
     color: white;
-    display: flex;
+    display: grid;
+    grid-template-columns: 180px 1fr;
     align-items: center;
     justify-content: space-between;
 }
-.logoLink{
-    margin-top: 20px;
-}
+
 
 .logo{
     font-family: Inter, sans-serif;
@@ -43,18 +40,18 @@
     align-self: start;
 }
 .navItems{
-    margin-top: -60px;
+    display: flex;
+    gap: 10px;
 }
 
 .navButton{
-   margin-left: 20px;
    border: none;
    padding: 5px 10px;
    cursor: pointer;
    color:#fff;
    background-color: #ff4a00;
    font: 400 14px Inter, sans-serif;
-   padding: 11px 24px;
+   padding: 11px 16px;
 }
 
 .userName{
@@ -81,6 +78,11 @@
     justify-content:left;
     margin: 20px;
     cursor: pointer;
+}
+
+.login-register{
+    display: flex;
+    justify-content: flex-end;
 }
 
 @media screen and (min-width: 1024px) {

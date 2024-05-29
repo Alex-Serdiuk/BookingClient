@@ -3,8 +3,9 @@ import "./navbar.css"
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket, faSuitcase, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faBed, faCar, faDharmachakra, faPlane, faSuitcase, faTaxi, faUser } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import logo from "./logo.png";
 
 const Navbar = () => {
   
@@ -24,9 +25,11 @@ const Navbar = () => {
     <div className="navbar">
         <div className="navContainer">
           <Link to="/" className="logoLink" style={{color:"inherit", textDecoration:"none"}}>
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/31c3ed2a7c25e45782dd51732c9a71686760e250f80716565f7e05429ae20224?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&" alt="ComfortHub logo" className="logo-img" />
-            <span className="logo">omfortHub</span>
+          <img loading="lazy" src={logo} alt="ComfortHub" />
+            
           </Link>
+
+          <div className="login-register">
             {user ? (
               <>
                 <span className="userName" onClick={()=>setOpenMenu(!openMenu)}>
@@ -62,7 +65,32 @@ const Navbar = () => {
                 
             </div>
             )}
+          </div>
+
+          <div className="headerList">
+                <div className="headerListItem active">
+                    <FontAwesomeIcon icon={faBed}/>
+                    <span>Stays</span>
+                </div> 
+                <div className="headerListItem">
+                    <FontAwesomeIcon icon={faPlane}/>
+                    <span>Flights</span>
+                </div> 
+                <div className="headerListItem">
+                    <FontAwesomeIcon icon={faCar}/>
+                    <span>Car rentals</span>
+                </div>
+                <div className="headerListItem">
+                    <FontAwesomeIcon icon={faDharmachakra}/>
+                    <span>Attractions</span>
+                </div>
+                <div className="headerListItem">
+                    <FontAwesomeIcon icon={faTaxi}/>
+                    <span>Airport taxis</span>
+                </div> 
         </div>
+        </div>
+        
     </div>
   )
 }

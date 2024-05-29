@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import "./header.css"
-import { faBed, faCalendarDays, faCar, faDharmachakra, faPerson, faPlane, faTaxi } from "@fortawesome/free-solid-svg-icons"
+import { faBed, faCalendarDays, faPerson, faSearch} from "@fortawesome/free-solid-svg-icons"
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
@@ -48,28 +48,7 @@ const Header = ({type}) => {
   return (
     <div className="header">
         <div className={type === "list" ? "headerContainer listMode" : "headerContainer"}>
-            <div className="headerList">
-                <div className="headerListItem active">
-                    <FontAwesomeIcon icon={faBed}/>
-                    <span>Stays</span>
-                </div> 
-                <div className="headerListItem">
-                    <FontAwesomeIcon icon={faPlane}/>
-                    <span>Flights</span>
-                </div> 
-                <div className="headerListItem">
-                    <FontAwesomeIcon icon={faCar}/>
-                    <span>Car rentals</span>
-                </div>
-                <div className="headerListItem">
-                    <FontAwesomeIcon icon={faDharmachakra}/>
-                    <span>Attractions</span>
-                </div>
-                <div className="headerListItem">
-                    <FontAwesomeIcon icon={faTaxi}/>
-                    <span>Airport taxis</span>
-                </div> 
-            </div>
+            
            { type !== "list" &&
            <>
            {/* <h1 className="headerTitle">Find your next stay</h1>
@@ -134,8 +113,10 @@ const Header = ({type}) => {
                         </div>
                     </div>}
                 </div>
-                <div className="headerSearchItem">
-                   <button className="headerBtn" onClick={handleSearch}>Search</button>
+                <div className="">
+                    <button className="headerBtn" onClick={handleSearch}>
+                        <FontAwesomeIcon icon={faSearch} />
+                    </button>
                 </div>
             </div>
             </>}

@@ -1,11 +1,18 @@
+*{
+    box-sizing: border-box;
+}
+
+img{
+    max-width: 100%;
+}
+
 .header{
-    background-color: #2e2e2e;
+    background: url(./bg-header.jpg) no-repeat 0 0  / cover;
     color: white;
     display: flex;
     justify-content: center;
     position: relative;
-    padding: 10px 0;
-    
+    min-height: 50vh;
 }
 
 body, html {
@@ -16,9 +23,7 @@ body, html {
 .headerContainer{
     width: 100%;
     max-width: 1024px;
-    margin: 20px 0px 0px 0px;
     display: flex;
-    /* justify-content: space-between; Додає проміжок між блоками */
     align-items: center;
     flex-direction: column;
 }
@@ -29,22 +34,28 @@ body, html {
 
 .headerList{
     display: flex;
-    /* justify-content: center; */
-    gap: 40px;
-    margin-bottom: 20px;
-    align-self: flex-end; /* Вирівнювання по правому краю */
+    gap: 16px;
+    align-self: flex-end;
+    grid-column: span 2;
+    justify-content: flex-end;
+    width: min-content;
+    overflow-x: auto;
 }
 .headerListItem{
     display: flex;
     align-items: center;
     gap: 10px;
     cursor: pointer;
+    padding: 10px;
+    border: 1px solid #FFA800;
+    border-bottom: none;
+    background: #3d3d3d;
+    transition: background .3s;
 }
 
-.headerListItem.active{
-    border: 1px solid white;
-    padding: 10px;
-    border-radius: 20px;
+.headerListItem.active,
+.headerListItem:hover{
+    background: #FFA800;
 }
 
 .headerDesc{
@@ -56,10 +67,16 @@ body, html {
     color: white;
     font-weight: 500;
     border: none;
-    padding: 10px;
+    padding: 14px;
     cursor: pointer;
-   
+    font-size: 16px;
+    transition: background-color .3s;
 }
+
+.headerBtn:hover{
+    background-color: #e64202;
+}
+
 
 .headerSearch{
     display: flex;
@@ -69,10 +86,11 @@ body, html {
     padding: 10px;
     width: 100%;
     max-width: 1024px;
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(5px);
     background-color: rgba(74, 74, 74, 0.4);
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     position: relative;
+   
 }
 
 .headerIcon{
@@ -86,16 +104,27 @@ body, html {
     align-items: center;
     padding: 10px 10px;
     gap: 10px;
+    flex: 1 1 0;
+    border: 1px transparent solid;
+    transition: border-color .3s;
+}
+
+.headerSearchItem:hover{
+    border-color: #FFA800;
 }
 
 .headerSearchInput{
+    color: #3d3d3d;
     border: none;
     outline: none;
+    padding: 0px;
+    font-size: 16px;
 }
 
 .headerSearchText{
     color: lightgray;
     cursor: pointer;
+    color: #3d3d3d; 
 }
 
 .date{

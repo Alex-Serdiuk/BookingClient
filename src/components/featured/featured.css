@@ -24,4 +24,6 @@
     position: absolute;
     bottom: 20px;
     left: 20px;
+    backdrop-filter: blur(1px);
+    /* width: 100%; */
 }
