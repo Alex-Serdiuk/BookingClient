@@ -2,7 +2,6 @@ import "./profile.css"
 import Navbar from "../../components/navabar/Navbar";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
-import MailList from "../../components/mailList/MailList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderOpen, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useState } from "react";
@@ -10,11 +9,9 @@ import useFetch from "../../hooks/useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
-import Reserve from "../../components/reserve/Reserve";
 import cloudinaryConfig from "../../cloudinary-config";
 import axios from "axios";
 import { sha1 } from "crypto-hash";
-import { faFileImage } from "@fortawesome/free-regular-svg-icons";
 
 const Profile = () => {
   const [file, setFile] = useState("");
@@ -168,7 +165,7 @@ const replaceImage = async (file, oldUrl) => {
   return (
     <div>
       <Navbar/>
-      <Header type="list"/>
+      {/* <Header type="list"/> */}
       {loading ? (
         "loading"
       ) : (
@@ -271,10 +268,9 @@ const replaceImage = async (file, oldUrl) => {
         
        
       </div>)}
-      <MailList/>
       <Footer/>
     </div>
   )
 }
 
-export default Profile
+export default Profile;

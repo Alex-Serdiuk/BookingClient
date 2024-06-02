@@ -1,10 +1,12 @@
 .featured{
     width: 100%;
     max-width: 1024px;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
     justify-content: space-between;
     gap: 20px;
     z-index: 1;
+    padding: 0 15px;
 }
 
 .featuredItem{
@@ -22,8 +24,20 @@
 
 .featuredTitles{
     position: absolute;
-    bottom: 20px;
-    left: 20px;
-    backdrop-filter: blur(1px);
-    /* width: 100%; */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 20px;  
+    font-size: 26px;
+    backdrop-filter: blur(10px);
+    background-color: #00000033;
+}
+
+
+@media screen and (min-width: 768px){
+.featured{
+     grid-template-columns: repeat(2, 1fr);
+}
 }

@@ -7,6 +7,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px; /* This is mt-5 where each mt unit is approx 4px */
+    margin-bottom: 20px;
 }
 
 .tableBooking {
@@ -36,7 +37,7 @@
 }
 
 .tableBooking tbody tr:hover {
-    background-color: #e1f5fe;
+    background-color: #fae3da;
 }
 
 .tableBooking img {
@@ -53,7 +54,7 @@
 .tableBooking button {
     padding: 8px 16px;
     border: none;
-    background-color: #007BFF;
+    background-color: #ff4a00;
     color: white;
     border-radius: 4px;
     cursor: pointer;
@@ -61,7 +62,7 @@
 }
 
 .tableBooking button:hover {
-    background-color: #0056b3;
+    background-color: #d13c02;
 }
 
 .tableBooking button:disabled {

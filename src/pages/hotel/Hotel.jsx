@@ -130,7 +130,7 @@ const Hotel = () => {
   return (
     <div>
       <Navbar/>
-      <Header type="list"/>
+      {/* <Header type="list"/> */}
       {loading ? (
         "loading"
       ) : (
@@ -184,9 +184,9 @@ const Hotel = () => {
           </div>
         </div>
         <RoomTable hotelId={id}/>
-        <MailList/>
-        <Footer/>
+        
       </div>)}
+      <Footer/>
       {openModal && <Reserve setOpen={setOpenModal} hotelId={id}/>}
     </div>
   )

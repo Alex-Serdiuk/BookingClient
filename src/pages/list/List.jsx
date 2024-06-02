@@ -7,6 +7,7 @@ import { format } from "date-fns"
 import { DateRange } from "react-date-range"
 import SearchItem from "../../components/searchItem/SearchItem"
 import useFetch from "../../hooks/useFetch";
+import Footer from "../../components/footer/Footer"
 
 const List = () => {
 
@@ -30,7 +31,7 @@ const List = () => {
   return (
     <div>
       <Navbar/>
-      <Header type="list"/>
+      {/* <Header type="list"/> */}
       <div className="listContainer">
         <div className="listWrapper">
           <div className="listSearch">
@@ -120,6 +121,7 @@ const List = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   )
 }

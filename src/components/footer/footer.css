@@ -1,23 +1,54 @@
-.footer{
-    width: 100%;
-    width: 1024px;
-    font-size: 12px;
-}
+footer {
+  background: #2e2e2e;
+  color: #ffffff;
   
-.fLists{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 50px;
 }
-  
-.fList{
-    list-style: none;
-    padding: 0;
+.logo-footer {
+  background-color: #4a4a4a;
+  text-align: center;
+  padding: 36px;
 }
-  
-.fListItem{
-    margin-bottom: 10px;
-    color: #003580;
-    cursor: pointer;
+.logo-footer a {
+  font-size: 40px;
+  background: linear-gradient(0deg, #ffa800, #ff4a00);
+  background: -webkit-linear-gradient(0deg, #ffa800, #ff4a00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+}
+.footer {
+  width: 100%;
+  /* max-width: 1024px; */
+  font-size: 12px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+.fLists {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: space-between;
+  margin-bottom: 50px;
+  gap: 20px
+}
+
+.fList {
+  list-style: none;
+  padding: 0;
+}
+
+.fListItem {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.fText {
+    color: #ddd;
+}
+
+
+@media screen and (min-width: 768px){
+  .fLists {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }

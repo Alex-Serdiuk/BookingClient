@@ -35,7 +35,7 @@ const Bookings = () => {
   return (
     <div>
         <Navbar/>
-        <Header type="list"/>
+        {/* <Header type="list"/> */}
         {loading ? (
                 "Loading..."
             ) : bookings && bookings.length > 0 ? (
@@ -91,7 +91,6 @@ const Bookings = () => {
                     <p>No bookings available.</p>
                 </div>
         )}
-        <MailList/>
         <Footer/>
     </div>
   )

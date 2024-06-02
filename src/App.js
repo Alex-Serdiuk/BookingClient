@@ -10,6 +10,8 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Profile from "./pages/profile/Profile";
 import Bookings from "./pages/bookings/Bookings";
+import "./App.css"
+
 function App() {
   return (
     <BrowserRouter>
