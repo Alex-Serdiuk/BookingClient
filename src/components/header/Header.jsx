@@ -41,8 +41,22 @@ const Header = ({type}) => {
     const { dispatch } = useContext(SearchContext);
 
     const handleSearch = ()=>{
-        dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
-        navigate("/hotels", {state:{destination, dates, options}})
+        const searchPayload = { destination, dates, options };
+    
+    // Dispatch the new search action
+    dispatch({ type: "NEW_SEARCH", payload: searchPayload });
+    
+    // Update localStorage
+    localStorage.setItem('search', JSON.stringify({
+      ...searchPayload,
+      dates: searchPayload.dates.map(date => ({
+        ...date,
+        startDate: date.startDate.toISOString(),
+        endDate: date.endDate.toISOString()
+      }))
+    }));
+    
+    navigate("/hotels", { state: searchPayload });
     }
 
   return (

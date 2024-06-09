@@ -1,0 +1,109 @@
+.reviews {
+    font-family: Arial, sans-serif;
+    /* max-width: 800px; */
+    /* margin: auto; */
+    margin-bottom: 40px;
+  }
+  
+  .overall-rating {
+    display: flex;
+    align-items: center;
+  }
+  
+  .score {
+    font-size: 48px;
+    color: orange;
+  }
+  
+  .rating-label {
+    font-size: 18px;
+    margin-left: 10px;
+  }
+  
+  .total-reviews, .read-reviews {
+    margin-left: 20px;
+    color: gray;
+    /* width: min-content; */
+  }
+  
+  .categories {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  
+  .category {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .category-name {
+    flex: 1;
+    font-size: 14px;
+  }
+  
+  .category-score {
+    width: 40px;
+    text-align: right;
+  }
+  
+  .category-bar {
+    flex: 1;
+    background-color: lightgray;
+    height: 10px;
+    margin-left: 10px;
+    position: relative;
+  }
+  
+  .filled-bar {
+    background-color: orange;
+    height: 100%;
+  }
+  
+  .individual-reviews {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  
+  .review {
+    border: 1px solid lightgray;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .review-header {
+    display: flex;
+    align-items: center;
+  }
+  
+  .review-name {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .review-date {
+    color: gray;
+  }
+  
+  .review-comment {
+    margin-top: 10px;
+  }
+  
+  .read-more {
+    color: orange;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .read-all-reviews {
+    color: white;
+    background-color: orange;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  

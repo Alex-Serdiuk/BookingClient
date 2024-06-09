@@ -21,20 +21,31 @@ const Featured = () => {
   ];
 
   const handleFeaturedClick = (city) => {
+    const searchPayload = {
+      destination: city,
+      dates: defaultDates,
+      options: { adult: 1, children: 0, room: 1 },
+    };
+
+    // Dispatch the new search action
     dispatch({
       type: "NEW_SEARCH",
-      payload: {
-        destination: city,
-        dates: defaultDates,
-        options: { adult: 1, children: 0, room: 1 },
-      },
+      payload: searchPayload,
     });
+
+    // Update localStorage
+    localStorage.setItem('search', JSON.stringify({
+      ...searchPayload,
+      dates: searchPayload.dates.map(date => ({
+        ...date,
+        startDate: date.startDate.toISOString(),
+        endDate: date.endDate.toISOString()
+      }))
+    }));
+
+    // Navigate to the hotels page with state
     navigate("/hotels", {
-      state: {
-        destination: city,
-        dates: defaultDates,
-        options: { adult: 1, children: 0, room: 1 },
-      },
+      state: searchPayload,
     });
   };
 

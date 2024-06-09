@@ -2,26 +2,65 @@ import "./list.css"
 import Navbar from '../../components/navabar/Navbar'
 import Header from '../../components/header/Header'
 import { useLocation } from "react-router-dom"
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { format } from "date-fns"
 import { DateRange } from "react-date-range"
 import SearchItem from "../../components/searchItem/SearchItem"
 import useFetch from "../../hooks/useFetch";
 import Footer from "../../components/footer/Footer"
+import { SearchContext } from "../../context/SearchContext"
 
 const List = () => {
 
   const location = useLocation();
-  const [destination,setDestination]=useState(location.state.destination);
-  const [dates,setDates]=useState(location.state.dates);
+  const { state, dispatch } = useContext(SearchContext);
+
+  // Initial state from SearchContext or localStorage
+  const initialSearchState = () => {
+    const localData = localStorage.getItem('search');
+    if (localData) {
+      const parsedData = JSON.parse(localData);
+      parsedData.dates = parsedData.dates.map(date => ({
+        ...date,
+        startDate: new Date(date.startDate),
+        endDate: new Date(date.endDate)
+      }));
+      return parsedData;
+    }
+    return {
+      destination: location.state.destination || "",
+      dates: location.state.dates || [{ startDate: new Date(), endDate: new Date(), key: 'selection' }],
+      options: location.state.options || { adult: 1, children: 0, room: 1 }
+    };
+  };
+
+  const [destination,setDestination]=useState(initialSearchState().destination);
+  const [dates,setDates]=useState(initialSearchState().dates);
   const [openDate,setOpenDate]=useState(false);
-  const [options,setOptions]=useState(location.state.options);
+  const [options,setOptions]=useState(initialSearchState().options);
   const [min, setMin] = useState(undefined);
   const [max, setMax] = useState(undefined);
 
   const { data, loading, error, reFetch } = useFetch(
     `/Hotel?city=${destination}&min=${min || 0 }&max=${max || 999}`
   );
+
+  useEffect(() => {
+    // Update SearchContext
+    dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
+    
+    // Update localStorage
+    localStorage.setItem('search', JSON.stringify({
+      destination,
+      dates: dates.map(date => ({
+        ...date,
+        startDate: date.startDate.toISOString(),
+        endDate: date.endDate.toISOString()
+      })),
+      options
+    }));
+  }, [destination, dates, options, dispatch]);
+
   const handleClick = () => {
     reFetch();
   };
@@ -38,7 +77,11 @@ const List = () => {
             <h1 className="lsTitle">Search</h1>
             <div className="lsItem">
               <label>Destination</label>
-              <input placeholder={destination} type="text" />
+              <input 
+              placeholder={destination} 
+              type="text"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)} />
             </div>
             <div className="lsItem">
               <label>Check-in Date</label>
@@ -84,6 +127,8 @@ const List = () => {
                     min={1}
                     className="lsOptionInput"
                     placeholder={options.adult}
+                    value={options.adult}
+                    onChange={(e) => setOptions(prev => ({ ...prev, adult: e.target.value }))}
                     />
                 </div>
                 <div className="lsOptionItem">
@@ -92,7 +137,8 @@ const List = () => {
                     type="number"
                     min={0}
                     className="lsOptionInput"
-                    placeholder={options.children}
+                    value={options.children}
+                    placeholder={options.children}onChange={(e) => setOptions(prev => ({ ...prev, children: e.target.value }))}
                     />
                 </div>
                 <div className="lsOptionItem">
@@ -102,6 +148,8 @@ const List = () => {
                     min={1}
                     className="lsOptionInput"
                     placeholder={options.room}
+                    value={options.room}
+                    onChange={(e) => setOptions(prev => ({ ...prev, room: e.target.value }))}
                     />
                 </div>
               </div>

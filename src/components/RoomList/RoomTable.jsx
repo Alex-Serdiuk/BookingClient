@@ -52,18 +52,33 @@ const RoomTable = ({hotelId}) =>
   const[openOptions, setOpenOptions] = useState(false);
   
 const handleOption = (name, operation) => {
-  setSelectedOptions(prev => ({
-    ...prev,
-    [name]: operation === "i" ? prev[name] + 1 : (prev[name] > 0 ? prev[name] - 1 : 0)
-  }));
+  setSelectedOptions(prev => {
+    const newOptions = {
+      ...prev,
+      [name]: operation === "i" ? prev[name] + 1 : (prev[name] > 0 ? prev[name] - 1 : 0)
+    };
+    updateLocalStorage(destination, selectedDates, newOptions);
+    return newOptions;
+  });
 };
 
-const handleSearch = ()=>{
-  dispatch({ type: "NEW_SEARCH", payload: { destination: destination, dates: selectedDates, options: selectedOptions } });
-  // dispatch({ type: "NEW_SEARCH", payload: { destination, selectedDates, selectedOptions } });
-  // navigate("/hotels", {state:{destination, dates, options}})
-  // window.location.reload();
-}
+const handleSearch = () => {
+  const searchPayload = { destination, dates: selectedDates, options: selectedOptions };
+  dispatch({ type: "NEW_SEARCH", payload: searchPayload });
+  updateLocalStorage(searchPayload.destination, searchPayload.dates, searchPayload.options);
+};
+
+const updateLocalStorage = (destination, dates, options) => {
+  localStorage.setItem('search', JSON.stringify({
+    destination,
+    dates: dates.map(date => ({
+      ...date,
+      startDate: date.startDate.toISOString(),
+      endDate: date.endDate.toISOString()
+    })),
+    options
+  }));
+};
 
 
   const getDatesInRange = (startDate, endDate) => {
@@ -197,19 +212,26 @@ const handleSearch = ()=>{
   return (
     <>
     <div className="room-table-container">
+      <h2>Availability</h2>
       <div className="roomSearch">
                 <div className="roomSearchItem">
                     <FontAwesomeIcon icon={faCalendarDays} className="roomSearchIcon"/>
                     <span onClick={()=>setOpenDate(!openDate)} className="roomSearchText">
                       {`${format(selectedDates[0].startDate,"MM/dd/yyyy")} to ${format(selectedDates[0].endDate,"MM/dd/yyyy")}`}</span>
-                    {openDate && <DateRange
-                        editableDateInputs={true}
-                        onChange={item => setSelectedDates([item.selection])}
-                        moveRangeOnFirstSelection={false}
-                        ranges={selectedDates}
-                        className="date"
-                        minDate={new Date()}
-                    />}
+                      {openDate && (
+                        <DateRange
+                          editableDateInputs={true}
+                          onChange={item => {
+                            const newDates = [item.selection];
+                            setSelectedDates(newDates);
+                            updateLocalStorage(destination, newDates, selectedOptions);
+                          }}
+                          moveRangeOnFirstSelection={false}
+                          ranges={selectedDates}
+                          className="date"
+                          minDate={new Date()}
+                        />
+                      )}
                 </div>
                 <div className="roomSearchItem">
                     <FontAwesomeIcon icon={faPerson} className="roomSearchIcon"/>
@@ -251,7 +273,7 @@ const handleSearch = ()=>{
                         </div>
                     </div>}
                 </div>
-                <div className="roomSearchItem">
+                <div className="">
                    <button className="roomBtn" onClick={handleSearch}>Search</button>
                 </div>
             </div>

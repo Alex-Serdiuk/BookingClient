@@ -46,5 +46,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://localhost:7023/api"
+  "proxy": "https://bookingserver20240604111443.azurewebsites.net/api"
 }

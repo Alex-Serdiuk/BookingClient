@@ -1,8 +1,10 @@
 .room-table-container {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    color: #333;
+  width: 100%;
+  max-width: 1024px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-bottom: 40px;
   }
   
   .room-table {
@@ -89,52 +91,69 @@
 
   .roomSearch{
     margin-top: 20px;
-    height: 30px;
-    background-color: white;
-    border: 3px solid #f3b303;
     display: flex;
     align-items:center;
+    flex-direction: column;
     justify-content: space-around;
-    padding: 10px 0px;
-    border-radius: 5px;
-    /* position: absolute; */
-    bottom: -25px;
-    width:fit-content;
+    gap: 10px;
+    padding: 10px;
+    width:80%;
     max-width: 1024px;
+    backdrop-filter: blur(25px);
+    background-color: rgba(74, 74, 74, 0.4);
+    border-radius: 5px;
+    position: relative;
+    /* bottom: -25px; */
+    /* height: 30px; */
 }
 
 .roomSearchIcon{
-    color: lightgray;
-    margin-left: 10px;
+  color: lightgray;
 }
 
 .roomSearchItem{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    
+  background-color: #fff;
+  color: #3d3d3d;
+  display: flex;
+  align-items: center;
+  padding: 10px 10px;
+  gap: 10px;
+  flex: 1 1 0;
+  border: 1px transparent solid;
+  transition: border-color .3s;
+  width: 100%;
+}
+.roomSearchItem:hover{
+  border-color: #FFA800;
 }
 
 .roomSearchInput{
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 0;
+}
+.roomBtn svg{
+  display: none;
 }
 
 .roomSearchText{
-    color: lightgray;
-    cursor: pointer;
+  font-size: 16px;
+  color: #3d3d3d;
+  cursor: pointer;
 }
 
 .roomSearchItem .date{
-    /* position: absolute; */
-    top: 975px;
+    position: absolute;
+    top: 55px;
+    left: 1%;
     z-index: 2;
 }
 
 .roomSearchItem .options{
     z-index: 2;
     position: absolute;
-    top: 975px;
+    top: 55px;
     background-color: white;
     color: gray;
     border-radius: 5px;
@@ -161,8 +180,8 @@
 .roomSearchItem.options.optionItem.optionCounterButton{
     width: 30px;
     height: 30px;
-    border: 1px solid #0473c2;
-    color: #0473c2;
+    border: 1px solid #ff4a00;
+    color: #ff4a00;
     cursor: pointer;
     background-color: white;
     
@@ -174,12 +193,25 @@
 }
 
 .roomBtn{
-  background-color: #046bd3;
-    color: white;
-    font-weight: 500;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    margin-left: 5px;
-    /* padding-right: 5px; */
+  background-color: #ff4a00;
+  color: white;
+  font-weight: 500;
+  border: none;
+  padding: 11px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
 }
+
+@media screen  and (min-width: 768px){
+  .roomSearch{
+    flex-direction: row;
+    width:60%;
+  }
+  .roomBtn span {
+    display: none;
+  }
+  .roomBtn svg{
+    display: block;
+  }
+  }
