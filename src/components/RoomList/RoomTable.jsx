@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { SearchContext } from "../../context/SearchContext";
-import useFetch from "../../hooks/useFetch";
+// import useFetch from "../../hooks/useFetch";
 import "./roomTable.css";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,12 +10,14 @@ import { faCalendarDays, faPerson } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import Room from "../Room/Room";
+import useApi from "../../hooks/useApi";
 
 const RoomTable = ({hotelId}) => 
 {
   const [selectedRoomNumbers, setSelectedRoomNumbers] = useState([]);
   const [availableRoomNumbers, setAvailableRoomNumbers] = useState([]);
-  const {data, loading, error} = useFetch(`/Hotel/GetRoomsByHotelId/${hotelId}`);
+  const { data, loading, error, get } = useApi(`/Hotel/GetRoomsByHotelId/${hotelId}`);
+  const { post } = useApi('/Booking'); // Використовуйте цей хук для POST запиту до /Booking
   const { dates, options, destination, dispatch } = useContext(SearchContext);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -31,18 +33,10 @@ const RoomTable = ({hotelId}) =>
     children: 0,
     room: 1
   });
-  
 
-  // Використання контексту для ініціалізації стану
-  // useEffect(() => {
-  //   if (dates && dates.length > 0) {
-  //     setSelectedDates(dates);
-  //   }
-  //   if (options) {
-  //     setSelectedOptions(options);
-  //   }
-    
-  // }, [dates, options]); 
+  useEffect(() => {
+    get();
+  }, [get, hotelId])
 
   useEffect(() => {
     setSelectedDates(dates);
@@ -188,8 +182,7 @@ const updateLocalStorage = (destination, dates, options) => {
           dates: alldates.map(timestamp => new Date(timestamp).toISOString()),
         };
     
-        const response = await axios.post(`/Booking`, payload);
-        console.log("Booking response:", response.data);
+       await post(payload);
         navigate("/bookings");
       } catch (err) {
         console.error("Failed to book rooms:", err);
@@ -288,7 +281,7 @@ const updateLocalStorage = (destination, dates, options) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((room, index) => (
+          {data && data.map((room, index) => (
             <tr key={room.id}>
               <td>
                 <div className="rTitle" 

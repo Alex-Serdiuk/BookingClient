@@ -1,14 +1,15 @@
 import "./list.css"
 import Navbar from '../../components/navabar/Navbar'
-import Header from '../../components/header/Header'
+// import Header from '../../components/header/Header'
 import { useLocation } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import { format } from "date-fns"
 import { DateRange } from "react-date-range"
 import SearchItem from "../../components/searchItem/SearchItem"
-import useFetch from "../../hooks/useFetch";
+// import useFetch from "../../hooks/useFetch";
 import Footer from "../../components/footer/Footer"
 import { SearchContext } from "../../context/SearchContext"
+import useApi from "../../hooks/useApi"
 
 const List = () => {
 
@@ -41,9 +42,12 @@ const List = () => {
   const [min, setMin] = useState(undefined);
   const [max, setMax] = useState(undefined);
 
-  const { data, loading, error, reFetch } = useFetch(
-    `/Hotel?city=${destination}&min=${min || 0 }&max=${max || 999}`
+  const { data, loading, error, get } = useApi(
+    `/Hotel?city=${destination}&min=${min || 0}&max=${max || 999}`
   );
+  useEffect(() => {
+    get();
+  }, [get]);
 
   useEffect(() => {
     // Update SearchContext
@@ -62,7 +66,7 @@ const List = () => {
   }, [destination, dates, options, dispatch]);
 
   const handleClick = () => {
-    reFetch();
+    get();
   };
 
   console.log(data)
@@ -161,7 +165,7 @@ const List = () => {
               "loading"
             ) : (
               <>
-                {data.map((item) => (
+                {data?.map((item) => (
                   <SearchItem item={item} key={item.id} />
                 ))}
               </>

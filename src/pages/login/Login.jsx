@@ -1,10 +1,12 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./login.css";
 import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
+// import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import useApi from "../../hooks/useApi";
 
 const Login = () => {
+  // const apiUrl = process.env.REACT_APP_API_URL;
     const [credentials, setCredentials] = useState({
         username: "",
         password: "",
@@ -13,20 +15,28 @@ const Login = () => {
       const { loading, error, dispatch } = useContext(AuthContext);
 
       const navigate = useNavigate();
+      const { post: login, data: loginData, error: loginError } = useApi("/Account/Login");
+
+      useEffect(() => {
+        if (loginData) {
+          dispatch({ type: "LOGIN_SUCCESS", payload: loginData.details });
+          navigate("/");
+        }
+      }, [loginData, dispatch, navigate]);
 
       const handleChange = (e) => {
         setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
       };
-
+      // console.log("API URL:", apiUrl); // Добавьте этот вывод для отладки
       const handleClick = async (e) => {
         e.preventDefault();
         dispatch({ type: "LOGIN_START" });
         try {
-          const res = await axios.post("/Account/Login", credentials);
-          dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-          navigate("/")
+          await login(credentials);
+          // dispatch({ type: "LOGIN_SUCCESS", payload: loginData.details });
+          // navigate("/")
         } catch (err) {
-          dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+          dispatch({ type: "LOGIN_FAILURE", payload: loginError });
         }
       };
 

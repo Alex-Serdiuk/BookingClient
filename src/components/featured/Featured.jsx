@@ -1,16 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
-
+import { useContext, useEffect } from "react";
+import useApi from "../../hooks/useApi";
 import "./featured.css";
 import { SearchContext } from "../../context/SearchContext";
-import { useContext } from "react";
 
 const Featured = () => {
-  const { data, loading, error } = useFetch(
-    "/Hotel/countByCity?cities=berlin,madrid,london,paris"
-  );
   const { dispatch } = useContext(SearchContext);
   const navigate = useNavigate();
+  const { data, loading, error, get } = useApi(
+    "/Hotel/countByCity?cities=berlin,madrid,london,paris"
+  );
+
+  useEffect(() => {
+    get();
+  }, [get]);
 
   const defaultDates = [
     {
@@ -66,7 +69,7 @@ const Featured = () => {
             />
             <div className="featuredTitles">
               <div>Berlin</div>
-              <div>{data["berlin"]} properties</div>
+              <div>{data?.berlin || 0} properties</div>
             </div>
           </div>
 
@@ -81,7 +84,7 @@ const Featured = () => {
             />
             <div className="featuredTitles">
               <div>Madrid</div>
-              <div>{data["madrid"]} properties</div>
+              <div>{data?.madrid || 0} properties</div>
             </div>
           </div>
 
@@ -96,9 +99,9 @@ const Featured = () => {
             />
             <div className="featuredTitles">
               <div>London</div>
-              <div>{data["london"]} properties</div>
+              <div>{data?.london || 0} properties</div>
             </div>
-            </div>
+          </div>
             
           <div
             className="featuredItem"
@@ -111,7 +114,7 @@ const Featured = () => {
             />
             <div className="featuredTitles">
               <div>Paris</div>
-              <div>{data["paris"]} properties</div>
+              <div>{data?.paris || 0} properties</div>
             </div>
           </div>
         </>

@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "./navbar.css";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

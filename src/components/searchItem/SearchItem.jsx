@@ -12,13 +12,13 @@ const SearchItem = ({item}) => {
   };
 
   // Функція для визначення тексту залежно від рейтингу
-  const getRatingWord = (rating) => {
-    if (rating >= 9) return "Superb";
-    if (rating >= 8) return "Very Good";
-    if (rating >= 7) return "Good";
-    if (rating >= 6) return "Pleasant";
-    return "Average";
-  };
+  // const getRatingWord = (rating) => {
+  //   if (rating >= 9) return "Superb";
+  //   if (rating >= 8) return "Very Good";
+  //   if (rating >= 7) return "Good";
+  //   if (rating >= 6) return "Pleasant";
+  //   return "Average";
+  // };
 
   return (
     <div className="searchItem">

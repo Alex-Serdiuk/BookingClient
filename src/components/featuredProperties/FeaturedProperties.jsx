@@ -1,13 +1,17 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { SearchContext } from "../../context/SearchContext";
-import useFetch from "../../hooks/useFetch";
-import "./featuredProperties.css"
+import useApi from "../../hooks/useApi";
+import "./featuredProperties.css";
 import { useNavigate } from "react-router-dom";
 
 const FeaturedProperties = () => {
-  const { data, loading, error } = useFetch("/Hotel?Featured=true&Limit=4");
   const { dispatch } = useContext(SearchContext);
   const navigate = useNavigate();
+  const { data, loading, error, get } = useApi("/Hotel?Featured=true&Limit=4");
+
+  useEffect(() => {
+    get();
+  }, [get]);
 
   const getRatingWord = (rating) => {
     if (rating >= 9) return "Superb";
@@ -40,7 +44,7 @@ const FeaturedProperties = () => {
         "Loading"
       ) : (
         <>
-          {data.map((item) => (
+          {data && data.map((item) => (
             <div className="fpItem" key={item.id} onClick={() => handleFpItemClick(item)}>
               <img
                 src={item.hotelImages[0]?.url}
@@ -59,8 +63,7 @@ const FeaturedProperties = () => {
         </>
       )}
     </div>
-      
-  )
+  );
 }
 
-export default FeaturedProperties
+export default FeaturedProperties;

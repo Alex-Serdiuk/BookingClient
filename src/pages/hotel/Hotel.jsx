@@ -1,12 +1,12 @@
 import "./hotel.css";
 import Navbar from "../../components/navabar/Navbar";
-import Header from "../../components/header/Header";
+// import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
-import MailList from "../../components/mailList/MailList";
+// import MailList from "../../components/mailList/MailList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle, faCircleArrowLeft, faCircleArrowRight, faCircleXmark, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import {faCircleArrowLeft, faCircleArrowRight, faCircleXmark, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useState } from "react";
-import useFetch from "../../hooks/useFetch";
+// import useFetch from "../../hooks/useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
@@ -14,6 +14,7 @@ import Reserve from "../../components/reserve/Reserve";
 import RoomTable from "../../components/RoomList/RoomTable";
 import HotelFeature from "../../components/hotelFeature/HotelFeature";
 import Reviews from "../../components/reviews/Reviews";
+import useApi from "../../hooks/useApi";
 
 const Hotel = () => {
   const location = useLocation();
@@ -26,11 +27,16 @@ const Hotel = () => {
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  const { data, loading, error } = useFetch(`/Hotel/${id}`);
+  const { data, loading, error, get } = useApi(`/Hotel/${id}`);
 
-  const [days, setDays] = useState(0);
+  // const [days, setDays] = useState(0);
   const [dayCount, setDayCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    get();
+  }, [get]);
+
 
   useEffect(() => {
     function calculateDays() {

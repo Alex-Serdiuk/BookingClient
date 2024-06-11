@@ -1,14 +1,18 @@
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import "./room.css";
-import useFetch from '../../hooks/useFetch';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import useApi from '../../hooks/useApi';
 
 const Room = ({ isOpen, setOpen, roomId }) => {
-    const { data, loading, error } = useFetch(`/Room/${roomId}`);
+    const { data, loading, error, get } = useApi(`/Room/${roomId}`);
+
+    useEffect(() => {
+        get();
+    }, [get, roomId]);
 
     const RoomFeature = ({ icon, text }) => (
         <div className="room-feature">
@@ -84,10 +88,13 @@ const Room = ({ isOpen, setOpen, roomId }) => {
     };
 
     function RoomDetails() {
+        if (!data) {
+            return null;
+        }
         return (
             <>
                 <article className="room-details">
-                    <h1 className="room-title">{data.title}</h1>
+                    <h1 className="room-title">{data?.title}</h1>
                     <div className="image-gallery">
                         <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b92801e00fd32e49a033126703dc2afc34a3ad335939a3ca7db36637bcd961df?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&" alt="" className="gallery-image" />
                         <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b92801e00fd32e49a033126703dc2afc34a3ad335939a3ca7db36637bcd961df?apiKey=7cdb7fcd050c4f1d8d8a5a08cb239f8c&" alt="" className="gallery-image" />
@@ -259,7 +266,7 @@ const Room = ({ isOpen, setOpen, roomId }) => {
         const roomData = {
             view: "Courtyard View",
             size: 10,
-            bedDescription: data.description,
+            bedDescription: data?.description,
             bedRating: "Comfortable beds (rating 8.9) – based on 791 reviews",
             description: "Double room with private bathroom with shower, hairdryer, slippers, and free toiletries. This soundproof double room features air conditioning, a flat-screen TV with cable channels, a minibar, and a safe. The windows offer a view of the courtyard. This accommodation option has 1 bed.",
             smoking: "Non-smoking",
@@ -368,7 +375,7 @@ const Room = ({ isOpen, setOpen, roomId }) => {
                             <Carousel dynamicHeight={true} 
                                 showArrows={true}
                             >
-                                {data.roomImages?.map((photo, i) => (
+                                {data?.roomImages?.map((photo, i) => (
                                     <div key={i}>
                                         <img src={photo.url} alt="" />
                                     </div>

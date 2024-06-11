@@ -1,12 +1,17 @@
-import { useContext } from "react";
-import useFetch from "../../hooks/useFetch";
-import "./propertyList.css"
+import { useContext, useEffect } from "react";
+import useApi from "../../hooks/useApi";
+import "./propertyList.css";
 import { SearchContext } from "../../context/SearchContext";
 import { useNavigate } from "react-router-dom";
+
 const PropertyList = () => {
-  const { data, loading, error } = useFetch("/Hotel/countByType");
   const { dispatch } = useContext(SearchContext);
   const navigate = useNavigate();
+  const { data, loading, error, get } = useApi("/Hotel/countByType");
+
+  useEffect(() => {
+    get();
+  }, [get]);
 
   const images = [
     "https://cf.bstatic.com/xdata/images/xphoto/square300/57584488.webp?k=bf724e4e9b9b75480bbe7fc675460a089ba6414fe4693b83ea3fdd8e938832a6&o=",
@@ -51,12 +56,12 @@ const PropertyList = () => {
 
   return (
     <div className="pList">
-        {loading ? (
+      {loading ? (
         "loading"
       ) : (
         <>
           {data &&
-            images.map((img,i) => (
+            images.map((img, i) => (
               <div
                 className={`pListItem ${data[i]?.type === "hotel" ? "clickable" : ""}`}
                 key={i}
@@ -77,7 +82,7 @@ const PropertyList = () => {
         </>
       )}
     </div>
-  )
+  );
 }
 
-export default PropertyList
+export default PropertyList;

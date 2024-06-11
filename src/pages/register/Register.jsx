@@ -2,9 +2,11 @@ import { useContext, useState } from "react";
 import "./register.css";
 import { AuthContext } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
+import useApi from "../../hooks/useApi";
 
 const Register = () => {
+  // const apiUrl = process.env.REACT_APP_API_URL;
   const [credentials, setCredentials] = useState({
     username: "",
     email: "",
@@ -20,6 +22,7 @@ const Register = () => {
 
   const { loading, error, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { post: register, data: registerData, error: registerError } = useApi("/Account/Register");
 
   const handleChange = (e) => {
     // setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -47,11 +50,11 @@ const Register = () => {
     }
    
     try {
-      const res = await axios.post("/Account/Register", credentials);
+      await register(credentials);
       
       navigate("/login")
     } catch (err) {
-      console.error("Registration error:", err);
+      console.error("Registration error:", registerError);
       // dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
   };

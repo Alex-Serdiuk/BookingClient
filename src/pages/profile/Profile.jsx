@@ -1,65 +1,63 @@
 import "./profile.css"
 import Navbar from "../../components/navabar/Navbar";
-import Header from "../../components/header/Header";
+// import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolderOpen, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFolderOpen } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useState } from "react";
-import useFetch from "../../hooks/useFetch";
-import { useLocation, useNavigate } from "react-router-dom";
-import { SearchContext } from "../../context/SearchContext";
+// import useFetch from "../../hooks/useFetch";
+// import { useNavigate } from "react-router-dom";
+// import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
 import cloudinaryConfig from "../../cloudinary-config";
-import axios from "axios";
+// import axios from "axios";
 import { sha1 } from "crypto-hash";
+import useApi from "../../hooks/useApi";
 
 const Profile = () => {
   const [file, setFile] = useState("");
-  const location = useLocation();
+  // const location = useLocation();
   const { user } = useContext(AuthContext);
   const { cloudName, apiKey, apiSecret } = cloudinaryConfig;
-  const { data, loading, error } = useFetch(`/User/${user.id}`);
+  const { data, loading, error, get, put, cloudinaryFetch } = useApi(`/User/${user.id}`);
   const [info, setInfo] = useState(
     {}
    );
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // console.log(data);
 
-  useEffect(()=>{
+  useEffect(() => {
+    get();
+  }, [get]);
+
+  useEffect(() => {
     if (!loading && !error && data) {
-      setInfo(data); // Оновлюємо стан даними, якщо дані були успішно завантажені з сервера
+      setInfo(data);
     }
-  }, [data, loading, error]);
+  }, [data, loading, error])
 
   const handleChange = e =>{
     setInfo(prev=>({...prev,[e.target.id]:e.target.value}))
   };
 
-  const handleDelete = async ( publicId ) => {
-    const timestamp = Date.now(); 
+  const handleDelete = async (publicId) => {
+    const timestamp = Date.now();
     const signature = await sha1(
       `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`
     );
     const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
-    // Видаляємо заголовок авторизації перед виконанням запиту на Cloudinary
-    delete axios.defaults.headers.common['Authorization'];
-    axios
-      .post(url, {
+
+    try {
+      const response = await cloudinaryFetch(url, 'POST', {
         public_id: publicId,
         timestamp: timestamp,
         api_key: apiKey,
         signature: signature
-      })
-      .then((response) => {
-        console.log('Изображение удалено из Cloudinary:', response);
-      })
-      
-      .catch((error) => {
-        console.error('Не удалось удалить изображение:', error);
-      }).finally(() =>{
-        const token =user.token;
-        axios.defaults.headers.common = {'Authorization': `bearer ${token}`};
       });
+      console.log('Изображение удалено из Cloudinary:', response);
+    } catch (error) {
+      console.error('Не удалось удалить изображение:', error);
+    }
   };
 
   const extractImageId = (url) => {
@@ -77,42 +75,29 @@ const Profile = () => {
  };
 
  const uploadImage = async (file) => {
-  try {  
-    // Видаляємо заголовок авторизації перед виконанням запиту на Cloudinary
-    delete axios.defaults.headers.common['Authorization'];
-    // Загрузить новое изображение
+  try {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "upload");
-    const uploadRes = await axios.post(
-      "https://api.cloudinary.com/v1_1/alex-s/image/upload",
+
+    const response = await cloudinaryFetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      'POST',
       data
     );
-    
-    const { url } = uploadRes.data;
-    // console.log(url)
-    
-    // Вернуть URL нового изображения
-    return url;
+
+    return response.url;
   } catch (error) {
     console.error("Ошибка при загрузке изображения:", error);
     throw error;
-  } finally {
-    const token = user.token;
-    axios.defaults.headers.common = {'Authorization': `bearer ${token}`};
   }
 };
 
 const replaceImage = async (file, oldUrl) => {
   try {
-    
-       const publicId = extractImageId(oldUrl);
-      // const publicId = getPublicId(oldUrl);
-      console.log(publicId)
-      await handleDelete(publicId);
-      let url = await uploadImage(file);
-      console.log(url);
-    // Вернуть URL нового изображения
+    const publicId = extractImageId(oldUrl);
+    await handleDelete(publicId);
+    const url = await uploadImage(file);
     return url;
   } catch (error) {
     console.error("Ошибка при замене изображения:", error);
@@ -122,39 +107,23 @@ const replaceImage = async (file, oldUrl) => {
 
   const handleClick = async e=> {
     e.preventDefault();
-    try{
-      if (!file) {
-        // Якщо файл не вибрано, пропустити post-запит на Cloudinary
-        const userUpdate = {
-          ...info,
-          //img: '', // Залишити img порожнім
-        };
-        // console.log(user);
-        try {
-          await axios.put(`/User/${user.id}`, userUpdate);
-        } catch (err) {
-          console.log(err);
-        }
-        return;
-      }
-      
+    try {
       let url;
-      if(info.img){
-        url = await replaceImage(file, info.img);
-        
-      }else{
-        url  = await uploadImage(file);
+      if (file) {
+        if (info.img) {
+          url = await replaceImage(file, info.img);
+        } else {
+          url = await uploadImage(file);
+        }
       }
-      //console.log(url)
-      
+
       const userUpdate = {
         ...info,
-        img: await url
+        img: url || info.img
       };
 
-      await axios.put(`/User/${user.id}`, userUpdate);
-     
-    }catch(err){
+      await put(userUpdate);
+    } catch (err) {
       console.log(err);
     }
   };
@@ -180,7 +149,7 @@ const replaceImage = async (file, oldUrl) => {
               src={
                 file
                   ? URL.createObjectURL(file)
-                  : data.img ? data.img : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                  : data && data.img ? data.img : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
               }
               alt=""
             />

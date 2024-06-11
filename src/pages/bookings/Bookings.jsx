@@ -1,16 +1,22 @@
 import "./bookings.css"
 import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../../components/navabar/Navbar'
-import Header from '../../components/header/Header'
+// import Header from '../../components/header/Header'
 import { AuthContext } from '../../context/AuthContext';
-import useFetch from '../../hooks/useFetch';
-import axios from 'axios';
-import MailList from "../../components/mailList/MailList";
+// import useFetch from '../../hooks/useFetch';
+// import axios from 'axios';
+// import MailList from "../../components/mailList/MailList";
 import Footer from "../../components/footer/Footer";
+import useApi from "../../hooks/useApi";
 
 const Bookings = () => {
     const { user } = useContext(AuthContext);
-    const { data, loading, error } = useFetch(`/Booking/GetBookingsByUserId/${user.id}`);
+    const { data, loading, error, get } = useApi(`/Booking/GetBookingsByUserId/${user.id}`);
+    const { del: deleteBooking } = useApi(); // Використовуйте окремий хук для DELETE запиту
+
+    useEffect(() => {
+        get();
+    }, [get]);
 
     const [bookings, setBookings] = useState([]);
 
@@ -22,16 +28,13 @@ const Bookings = () => {
 
     const handleCancelBooking = async (bookingId) => {
         try {
-            const response =  await axios.delete(`/Booking/${bookingId}`);
-          if (response.status === 200) {
+            await deleteBooking(`/Booking/${bookingId}`);
             setBookings(prevBookings => prevBookings.filter(booking => booking.id !== bookingId));
             alert('Booking has been cancelled successfully');
-        }
         } catch (error) {
-          alert('Failed to cancel the booking');
+            alert('Failed to cancel the booking');
         }
-      };
-
+    };
   return (
     <div>
         <Navbar/>
