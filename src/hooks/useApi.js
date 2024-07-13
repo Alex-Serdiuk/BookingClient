@@ -5,18 +5,33 @@ const useApi = (endpoint) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const baseUrl = process.env.REACT_APP_API_URL;
-  const url = `${baseUrl}${endpoint}`;
 
-  const fetchData = async (method, body = null) => {
+  const baseUrl = process.env.REACT_APP_API_URL;
+  const url = endpoint ? `${baseUrl}${endpoint}` : null;
+
+  const apiInstance = axios.create();
+
+  apiInstance.interceptors.request.use((config) => {
+    if (config.url.startsWith(baseUrl)) {
+      const token = localStorage.getItem("authToken"); // Retrieve the token from localStorage or any other storage
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } else {
+      delete config.headers.Authorization;
+    }
+    return config;
+  });
+
+  const fetchData = async (method, body = null, fetchUrl = url) => {
     setLoading(true);
     try {
       const options = {
         method,
-        url,
+        url: fetchUrl,
         data: body,
       };
-      const response = await axios(options);
+      const response = await apiInstance(options);
       setData(response.data);
       setError(null);
     } catch (err) {
@@ -28,19 +43,14 @@ const useApi = (endpoint) => {
   const get = useCallback(() => fetchData('GET'), [url]);
   const post = useCallback((body) => fetchData('POST', body), [url]);
   const put = useCallback((body) => fetchData('PUT', body), [url]);
-  const del = useCallback(() => fetchData('DELETE'), [url]);
+  const del = useCallback((fetchUrl) => fetchData('DELETE', null, `${baseUrl}${fetchUrl}`), [baseUrl]);
 
-  const cloudinaryFetch = async (url, method, data) => {
-    const token = axios.defaults.headers.common['Authorization'];
-    delete axios.defaults.headers.common['Authorization'];
-
+  const cloudinaryFetch = async (fetchUrl, method, data) => {
     try {
-      const response = await axios({ url, method, data });
+      const response = await apiInstance({ url: fetchUrl, method, data });
       return response.data;
     } catch (error) {
       throw error;
-    } finally {
-      axios.defaults.headers.common['Authorization'] = token;
     }
   };
 
