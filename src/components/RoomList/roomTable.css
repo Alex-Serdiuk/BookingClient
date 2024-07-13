@@ -46,6 +46,7 @@
 
   .rTitle {
     font-weight: 500;
+    cursor: pointer;
   }
   
   .rDesc {
